@@ -1,6 +1,6 @@
-# Encore
+# RotMG Legacy Server
 
-<img src="rotmg.png" alt="gameplay image" width=200/>
+<img src="rotmg.png" alt="gameplay image" width=400/>
 
 Server emulator for RotMG legacy Flash version 27.7.DECA.
 
