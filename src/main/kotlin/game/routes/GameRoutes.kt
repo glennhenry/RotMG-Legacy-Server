@@ -55,6 +55,20 @@ class GameRoutes : RouteHandler {
                 call.respond(HttpStatusCode.OK, MysteryBoxResponse)
             }
         }
+        post("/friends/getList") {
+            handle(call, NoAuthGuard) {
+                val payload = call.receiveText().formBodyToMap()
+                Fancam.debug { "Request to friends/getList: $payload" }
+                call.respond(HttpStatusCode.OK, FriendListResponse)
+            }
+        }
+        post("/friends/getRequests") {
+            handle(call, NoAuthGuard) {
+                val payload = call.receiveText().formBodyToMap()
+                Fancam.debug { "Request to friends/getRequests: $payload" }
+                call.respond(HttpStatusCode.OK, FriendInviteRequestResponse)
+            }
+        }
     }
 }
 
@@ -67,6 +81,16 @@ const val GlobalNewsResponse = """
 const val MysteryBoxResponse = """
     <Boxes>
     </Boxes>
+"""
+
+const val FriendListResponse = """
+    <Account>
+    </Account>
+"""
+
+const val FriendInviteRequestResponse = """
+    <Account>
+    </Account>
 """
 
 val charlistResponse = """
