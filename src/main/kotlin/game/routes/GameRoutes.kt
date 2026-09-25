@@ -34,8 +34,17 @@ class GameRoutes : RouteHandler {
                 call.respond(HttpStatusCode.OK, charlistResponse)
             }
         }
+        post("/package/getPackages") {
+            handle(call, NoAuthGuard) {
+                val payload = call.receiveText().formBodyToMap()
+                Fancam.debug { "Request to package/getPackages: $payload" }
+                call.respond(HttpStatusCode.OK, EmptyPackageResponse)
+            }
+        }
     }
 }
+
+const val EmptyPackageResponse = "<Packages></Packages>"
 
 val charlistResponse = """
 <chars nextCharId="1" maxNumChars="3">
