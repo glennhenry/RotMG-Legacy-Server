@@ -27,8 +27,13 @@ fun Route.fileRoutes() {
     get("/crossdomain.xml") {
         call.respondFile(File("assets/crossdomain.xml"))
     }
-    get("sorc.mp3") {
-        call.respondFile(File("assets/game/sorc.mp3"))
+    get("/sfx/{filename}") {
+        val filename = requireNotNull(call.pathParameters["filename"]) { "No file name GET sfx/" }
+        call.respondFile(File("assets/game/sfx/$filename"))
+    }
+    get("/music/{filename}") {
+        val filename = requireNotNull(call.pathParameters["filename"]) { "No file name GET music/" }
+        call.respondFile(File("assets/game/music/$filename"))
     }
 
     val docsDir = File("docs_build")
