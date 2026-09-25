@@ -1,10 +1,14 @@
 # RotMG Legacy Server
 
-<img src="rotmg.png" alt="gameplay image" width=400/>
+<img src="progress.png" alt="gameplay image" width=400/>
 
 Server emulator for RotMG legacy Flash version 27.7.DECA.
 
-*This project tries to reconstruct the game server-side behavior. Client files and assets are not included. This project is not official and is not associated with the original creators.*
+<img src="progress2.png" alt="gameplay image" width=400/>
+
+As of now we are stuck while trying to play the game after clicking the play button on guest account. We have connected the game to the socket server, but still fail to establish any communication.
+
+_This project tries to reconstruct the game server-side behavior. This project is not official and is not associated with the original creators._
 
 Made with [Encore](https://github.com/glennhenry/Encore).
 

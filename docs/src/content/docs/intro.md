@@ -10,6 +10,16 @@ Documentation about RotMG Legacy Server.
 
 The RotMG version we used is the 27.7.DECA on 19-July-2016.
 
+### Edit List
+
+These were the edits done to `client.swf` before being tracked by Git.
+
+1. Changed domain `ProductionSetup.as@line 9` to localhost address.
+2. Changed domain `CompileTimeBuildData.as@line 14,16` to localhost address.
+3. Changed default parameter value to `true` for app engine connection into unencrypted (to use http) `ProductionSetup.as@line 24`.
+4. Enabled the junkbyte console `WebMain.as@line 92` by allowing command line, adding console initiation, as well as adding import.
+5. Changed port number to 7777 and disable encryption `Parameters.as@line 21, 23`.
+
 ### Networking
 
 RotMG networking so far is simple. It's just HTTP POST request. The RotMG server is the appspot `realmofthemadgodhrd.appspot.com`. It also uses optional encryption.

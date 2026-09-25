@@ -2,7 +2,6 @@
 .kotlin
 .logs/
 deploy/
-assets/
 venue.secret.xml
 
 .gradle
