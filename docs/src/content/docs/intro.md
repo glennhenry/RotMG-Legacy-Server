@@ -72,3 +72,13 @@ This mean the code that reads server's response are scattered instead of in one 
 The game uses XML file to list game data. They are called **objects**. Each of them has a _type_, which refers to their unique identifier, an index that reference their position on external assets file such as the spritesheet image.
 
 The index that the XML files use is a hexadecimal value like `0x164`. Important: the server should list a decimal value.
+
+### Account and Login
+
+RotMG rely on Flash's `SharedObject`, that is the local storage stored on user's computer.
+
+When you open the game on `realmofthemadgod.com` (not Kongregate, Kabam, or anywhere else that has auth process before), it will show you guest account, unless you have registered/login before. When you have an account, there will be shared object cookie on your PC, and the game will use that.
+
+In other word, what determine whether a user is logged in or not is their Flash cookie instead of the server. The server merely sends the account information like account ID, name, is email verified, character data, and many more.
+
+So, it's possible for guest account to have every stuff, because guest or not is determined by cookie, and server can return anything.
