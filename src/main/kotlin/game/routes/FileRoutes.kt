@@ -23,6 +23,13 @@ fun Route.fileRoutes() {
         call.respondFile(File("assets/site/index.html"))
     }
     staticFiles("site", File("assets/site"))
+    staticFiles("game", File("assets/game"))
+    get("/crossdomain.xml") {
+        call.respondFile(File("assets/crossdomain.xml"))
+    }
+    get("sorc.mp3") {
+        call.respondFile(File("assets/game/sorc.mp3"))
+    }
 
     val docsDir = File("docs_build")
     if (File(docsDir, "index.html").exists()) {
