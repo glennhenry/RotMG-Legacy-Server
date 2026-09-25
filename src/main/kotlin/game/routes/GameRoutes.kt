@@ -48,6 +48,13 @@ class GameRoutes : RouteHandler {
                 call.respond(HttpStatusCode.OK, GlobalNewsResponse)
             }
         }
+        post("/mysterybox/getBoxes") {
+            handle(call, NoAuthGuard) {
+                val payload = call.receiveText().formBodyToMap()
+                Fancam.debug { "Request to mysterybox/getBoxes: $payload" }
+                call.respond(HttpStatusCode.OK, MysteryBoxResponse)
+            }
+        }
     }
 }
 
@@ -55,6 +62,11 @@ const val EmptyPackageResponse = "<Packages></Packages>"
 
 const val GlobalNewsResponse = """
 []
+"""
+
+const val MysteryBoxResponse = """
+    <Boxes>
+    </Boxes>
 """
 
 val charlistResponse = """
