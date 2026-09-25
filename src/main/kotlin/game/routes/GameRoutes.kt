@@ -41,10 +41,21 @@ class GameRoutes : RouteHandler {
                 call.respond(HttpStatusCode.OK, EmptyPackageResponse)
             }
         }
+        post("/app/globalNews") {
+            handle(call, NoAuthGuard) {
+                val payload = call.receiveText().formBodyToMap()
+                Fancam.debug { "Request to app/globalNews: $payload" }
+                call.respond(HttpStatusCode.OK, GlobalNewsResponse)
+            }
+        }
     }
 }
 
 const val EmptyPackageResponse = "<Packages></Packages>"
+
+const val GlobalNewsResponse = """
+[]
+"""
 
 val charlistResponse = """
 <chars nextCharId="1" maxNumChars="3">

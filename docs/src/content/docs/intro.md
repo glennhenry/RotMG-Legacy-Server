@@ -26,7 +26,7 @@ Instead of `localhost/app?param1=value1&param2=value2` the game simply requests 
 
 _Some symbols like `_`is encoded as`%5F`\_.
 
-Many of the server response such as the `char/list` is XML.
+The server response vary from XML and JSON.
 
 ### Strings
 
