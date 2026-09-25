@@ -1,0 +1,220 @@
+{
+  "Particle": {
+    "id": "SwirlingMist",
+    "Texture": {
+      "File": "lofiParts",
+      "Index": "0x00"
+    },
+    "Animation": [
+      {
+        "prob": ".5",
+        "period": "0",
+        "Frame": [
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x01"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x02"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x03"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x04"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x05"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x06"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x00"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x07"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x08"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x09"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0a"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0b"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0c"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0d"
+            }
+          },
+          {
+            "time": "1",
+            "Texture": {
+              "File": "invisible",
+              "Index": "0"
+            }
+          }
+        ]
+      },
+      {
+        "prob": ".5",
+        "period": "0",
+        "Frame": [
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x01"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x03"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x04"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x05"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x06"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x07"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x08"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0a"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0b"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0c"
+            }
+          },
+          {
+            "time": "0.2",
+            "Texture": {
+              "File": "lofiParts",
+              "Index": "0x0d"
+            }
+          },
+          {
+            "time": "1.2",
+            "Texture": {
+              "File": "invisible",
+              "Index": "0"
+            }
+          }
+        ]
+      }
+    ],
+    "Size": "100",
+    "Z": "0.2",
+    "Flying": "",
+    "Duration": "3.0",
+    "Movement": {
+      "_": "RandomDirection",
+      "speed": "0.1"
+    }
+  }
+}

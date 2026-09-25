@@ -1,0 +1,346 @@
+{
+  "EquipmentSet": [
+    {
+      "type": "0x0001",
+      "id": "Oryx Awesome Set",
+      "Setpiece": [
+        {
+          "_": "Equipment",
+          "slot": "2",
+          "itemtype": "0x2337"
+        },
+        {
+          "_": "Equipment",
+          "slot": "1",
+          "itemtype": "0x2339"
+        },
+        {
+          "_": "Equipment",
+          "slot": "3",
+          "itemtype": "0x2338"
+        },
+        {
+          "_": "Equipment",
+          "slot": "0",
+          "itemtype": "0x2302"
+        }
+      ],
+      "ActivateOnEquipAll": {
+        "_": "ChangeSkin",
+        "skinType": "0x0401",
+        "size": "70",
+        "color": "0x92A9BA"
+      }
+    },
+    {
+      "type": "0x0002",
+      "id": "Priest of Geb Set",
+      "Setpiece": [
+        {
+          "_": "Equipment",
+          "slot": "0",
+          "itemtype": "0x235F"
+        },
+        {
+          "_": "Equipment",
+          "slot": "1",
+          "itemtype": "0x235E"
+        },
+        {
+          "_": "Equipment",
+          "slot": "2",
+          "itemtype": "0x235C"
+        },
+        {
+          "_": "Equipment",
+          "slot": "3",
+          "itemtype": "0x235D"
+        }
+      ],
+      "ActivateOnEquipAll": [
+        {
+          "_": "ChangeSkin",
+          "skinType": "0x745A",
+          "size": "70",
+          "color": "0x92A9BA",
+          "bulletType": "Great Geb Shot"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "0",
+          "amount": "50"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "3",
+          "amount": "50"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "20",
+          "amount": "8"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "22",
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "type": "0x0005",
+      "id": "Skuld 2 The ReGhostening Set",
+      "Setpiece": [
+        {
+          "_": "Equipment",
+          "slot": "0",
+          "itemtype": "0x21a0"
+        },
+        {
+          "_": "Equipment",
+          "slot": "1",
+          "itemtype": "0x21a2"
+        },
+        {
+          "_": "Equipment",
+          "slot": "2",
+          "itemtype": "0x21a1"
+        },
+        {
+          "_": "Equipment",
+          "slot": "3",
+          "itemtype": "0x21a3"
+        }
+      ],
+      "ActivateOnEquipAll": [
+        {
+          "_": "ChangeSkin",
+          "skinType": "0x21a6",
+          "size": "70",
+          "color": "0x92A9BA",
+          "bulletType": "Spooky Sparkle 9000"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "0",
+          "amount": "80"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "3",
+          "amount": "30"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "20",
+          "amount": "5"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "22",
+          "amount": "6"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "28",
+          "amount": "1"
+        }
+      ]
+    },
+    {
+      "type": "0x0006",
+      "id": "Twilight Archmage Set",
+      "Setpiece": [
+        {
+          "_": "Equipment",
+          "slot": "0",
+          "itemtype": "0x21a7"
+        },
+        {
+          "_": "Equipment",
+          "slot": "1",
+          "itemtype": "0x21a9"
+        },
+        {
+          "_": "Equipment",
+          "slot": "2",
+          "itemtype": "0x21a8"
+        },
+        {
+          "_": "Equipment",
+          "slot": "3",
+          "itemtype": "0x21aa"
+        }
+      ],
+      "ActivateOnEquipAll": [
+        {
+          "_": "ChangeSkin",
+          "skinType": "0x0402",
+          "size": "70",
+          "color": "0x92A9BA",
+          "bulletType": "Morer Ancienter Magic"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "0",
+          "amount": "40"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "3",
+          "amount": "15"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "20",
+          "amount": "2"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "21",
+          "amount": "5"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "22",
+          "amount": "2"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "28",
+          "amount": "2"
+        }
+      ]
+    },
+    {
+      "type": "0x0003",
+      "id": "Swoll Paladin Set",
+      "Setpiece": [
+        {
+          "_": "Equipment",
+          "slot": "0",
+          "itemtype": "0x2367"
+        },
+        {
+          "_": "Equipment",
+          "slot": "1",
+          "itemtype": "0x2366"
+        },
+        {
+          "_": "Equipment",
+          "slot": "2",
+          "itemtype": "0x2364"
+        },
+        {
+          "_": "Equipment",
+          "slot": "3",
+          "itemtype": "0x2365"
+        }
+      ],
+      "ActivateOnEquipAll": [
+        {
+          "_": "ChangeSkin",
+          "skinType": "0x745C",
+          "size": "70",
+          "color": "0x92A9BA",
+          "bulletType": "Fairy Bolt"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "0",
+          "amount": "50"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "3",
+          "amount": "50"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "20",
+          "amount": "2"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "21",
+          "amount": "5"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "22",
+          "amount": "5"
+        }
+      ]
+    },
+    {
+      "type": "0x0004",
+      "id": "Phylactery Mystic Set",
+      "Setpiece": [
+        {
+          "_": "Equipment",
+          "slot": "0",
+          "itemtype": "0x2363"
+        },
+        {
+          "_": "Equipment",
+          "slot": "1",
+          "itemtype": "0x2362"
+        },
+        {
+          "_": "Equipment",
+          "slot": "2",
+          "itemtype": "0x2360"
+        },
+        {
+          "_": "Equipment",
+          "slot": "3",
+          "itemtype": "0x2361"
+        }
+      ],
+      "ActivateOnEquipAll": [
+        {
+          "_": "ChangeSkin",
+          "skinType": "0x745B",
+          "size": "70",
+          "color": "0x92A9BA",
+          "bulletType": "Soul Vortex"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "0",
+          "amount": "35"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "3",
+          "amount": "40"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "20",
+          "amount": "5"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "21",
+          "amount": "10"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "28",
+          "amount": "1"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "22",
+          "amount": "2"
+        },
+        {
+          "_": "IncrementStat",
+          "stat": "27",
+          "amount": "5"
+        }
+      ]
+    }
+  ]
+}

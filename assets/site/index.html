@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realm of the Mad God</title>
+  <link rel="shortcut icon" href="./site/favicon.ico">
+  <script src="./site/swfobject.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1c1c1c;
+      color: #eee;
+    }
+
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .client-container {
+      width: 800px;
+      height: 600px;
+    }
+
+    .toolbar {
+      width: 800px;
+      display: flex;
+      gap: 4px;
+    }
+
+    #kill-swf {
+      padding: 4px 6px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="client-container">
+      <div id="client-placeholder"></div>
+    </div>
+    <div class="toolbar">
+      <button id="kill-swf">Kill</button>
+    </div>
+  </div>
+
+  <script>
+    var flashvars = {
+
+    };
+
+    var params = {
+      quality: "high",
+      bgcolor: "#000000",
+      allowScriptAccess: "always",
+      allowFullScreen: "true"
+    };
+
+    var attributes = {
+      id: "RotMG",
+      name: "Realm of the Mad God"
+    };
+
+    swfobject.embedSWF(
+      "/game/client.swf",
+      "client-placeholder",
+      "100%",
+      "100%",
+      "10.0.0",
+      null,
+      flashvars,
+      params,
+      attributes
+    );
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("kill-swf").addEventListener('click', () => {
+        swfobject.removeSWF("RotMG");
+      })
+    });
+  </script>
+</body>
+
+</html>
