@@ -1,0 +1,165 @@
+package kabam.rotmg.pets.view.components
+{
+   import com.company.assembleegameclient.util.Currency;
+   import com.company.util.MoreColorUtil;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.events.MouseEvent;
+   import flash.filters.ColorMatrixFilter;
+   import flash.filters.DropShadowFilter;
+   import kabam.rotmg.text.model.TextKey;
+   import kabam.rotmg.text.view.TextFieldDisplayConcrete;
+   import kabam.rotmg.text.view.stringBuilder.LineBuilder;
+   import kabam.rotmg.util.components.LegacyBuyButton;
+   import org.osflash.signals.IOnceSignal;
+   import org.osflash.signals.Signal;
+   
+   public class FameOrGoldBuyButtons extends Sprite
+   {
+      
+      private static const grayfilter:ColorMatrixFilter = new ColorMatrixFilter(MoreColorUtil.greyscaleFilterMatrix);
+      
+      public const positioned:Signal = new Signal();
+      
+      public const goldButtonClicked:Signal = new Signal(int);
+      
+      public const fameButtonClicked:Signal = new Signal(int);
+      
+      public const clicked:IOnceSignal = new Signal();
+      
+      public var goldButton:LegacyBuyButton = new LegacyBuyButton("",14,0,Currency.GOLD);
+      
+      public var fameButton:LegacyBuyButton = new LegacyBuyButton("",14,0,Currency.FAME);
+      
+      private const spacing:int = 7;
+      
+      private var prefix:TextFieldDisplayConcrete = this.makeTextField();
+      
+      private var or:TextFieldDisplayConcrete = this.makeTextField().setStringBuilder(new LineBuilder().setParams(TextKey.BUTTON_BAR_OR));
+      
+      private var disabled:Boolean = false;
+      
+      public function FameOrGoldBuyButtons()
+      {
+         super();
+         this.goldButton.addEventListener(MouseEvent.CLICK,this.onGoldClick);
+         this.fameButton.addEventListener(MouseEvent.CLICK,this.onFameClick);
+         addEventListener(Event.REMOVED_FROM_STAGE,this.onRemovedFromStage);
+         this.fameButton.readyForPlacement.add(this.positionComponents);
+         this.goldButton.readyForPlacement.add(this.positionComponents);
+         this.prefix.textChanged.add(this.positionComponents);
+      }
+      
+      public function setDisabled(param1:Boolean) : void
+      {
+         if(this.disabled != param1)
+         {
+            this.disabled = param1;
+            this.goldButton.setEnabled(!this.disabled);
+            this.fameButton.setEnabled(!this.disabled);
+         }
+      }
+      
+      public function isDisabled() : Boolean
+      {
+         return this.disabled;
+      }
+      
+      public function setGoldPrice(param1:int) : void
+      {
+         this.goldButton.setPrice(param1,Currency.GOLD);
+         !contains(this.goldButton) && addChild(this.goldButton);
+      }
+      
+      public function getGoldPrice() : int
+      {
+         return this.goldButton.getPrice();
+      }
+      
+      public function setPrefix(param1:String) : void
+      {
+         this.prefix.setStringBuilder(new LineBuilder().setParams(param1));
+         !contains(this.prefix) && addChild(this.prefix);
+      }
+      
+      public function clearFameAndGold() : void
+      {
+         contains(this.goldButton) && removeChild(this.goldButton);
+         contains(this.fameButton) && removeChild(this.fameButton);
+         contains(this.or) && removeChild(this.or);
+      }
+      
+      private function positionComponents() : void
+      {
+         if(contains(this.goldButton))
+         {
+            this.goldButton.x = this.prefix.width + this.spacing;
+         }
+         if(contains(this.fameButton))
+         {
+            if(contains(this.goldButton))
+            {
+               !contains(this.or) && addChild(this.or);
+               this.or.textChanged.addOnce(this.positionComponents);
+               this.or.x = this.goldButton.x + this.goldButton.width + this.spacing;
+               this.fameButton.x = this.or.x + this.or.width + this.spacing;
+            }
+            else
+            {
+               this.fameButton.x = this.prefix.width + this.spacing;
+            }
+         }
+         this.positioned.dispatch();
+      }
+      
+      public function setFamePrice(param1:int) : void
+      {
+         this.fameButton.setPrice(param1,Currency.FAME);
+         !contains(this.fameButton) && addChild(this.fameButton);
+      }
+      
+      public function getFamePrice() : int
+      {
+         return this.fameButton.getPrice();
+      }
+      
+      private function onRemovedFromStage(param1:Event) : void
+      {
+         removeEventListener(Event.REMOVED_FROM_STAGE,this.onRemovedFromStage);
+         this.goldButton.removeEventListener(MouseEvent.CLICK,this.onGoldClick);
+         this.fameButton.removeEventListener(MouseEvent.CLICK,this.onFameClick);
+         this.fameButton.readyForPlacement.remove(this.positionComponents);
+         this.goldButton.readyForPlacement.remove(this.positionComponents);
+         this.prefix.textChanged.remove(this.positionComponents);
+      }
+      
+      private function onFameClick(param1:MouseEvent) : void
+      {
+         if(!this.disabled)
+         {
+            this.fameButtonClicked.dispatch(this.fameButton.price);
+            this.clicked.dispatch();
+         }
+         this.setDisabled(true);
+      }
+      
+      private function onGoldClick(param1:MouseEvent) : void
+      {
+         if(!this.disabled)
+         {
+            this.goldButtonClicked.dispatch(this.goldButton.price);
+            this.clicked.dispatch();
+         }
+         this.setDisabled(true);
+      }
+      
+      private function makeTextField() : TextFieldDisplayConcrete
+      {
+         var _loc1_:TextFieldDisplayConcrete = new TextFieldDisplayConcrete().setSize(16).setColor(11776947).setBold(true);
+         _loc1_.filters = [new DropShadowFilter(0,0,0)];
+         _loc1_.y = 3;
+         return _loc1_;
+      }
+   }
+}
+

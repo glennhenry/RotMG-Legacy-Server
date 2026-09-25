@@ -1,0 +1,15 @@
+package kabam.rotmg.fortune.components
+{
+   import mx.core.BitmapAsset;
+   
+   [Embed(source="/_assets/220_kabam.rotmg.fortune.components.FortuneModal_fortunePlatformEmbed.png")]
+   public class FortuneModal_fortunePlatformEmbed extends BitmapAsset
+   {
+      
+      public function FortuneModal_fortunePlatformEmbed()
+      {
+         super();
+      }
+   }
+}
+
