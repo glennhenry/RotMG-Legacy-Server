@@ -26,6 +26,8 @@ Instead of `localhost/app?param1=value1&param2=value2` the game simply requests 
 
 _Some symbols like `_`is encoded as`%5F`\_.
 
+Many of the server response such as the `char/list` is XML.
+
 ### Strings
 
 The game first request a string table in format of JSON array. The JSON file must be an array `[]` not `{}`. Each element of the array is another array of length 3, where the first element is string identifier, the second is string text, and the third is the language code identifier.
@@ -56,3 +58,11 @@ Cc.startOnStage(this,"`");
 ```
 
 where "`" is the hotkey to enable.
+
+### Pub/Sub Command Architecture
+
+The client uses command architecture by creating class creating `Config` classes which will configure various connection between the client's components. This includes dependency injection, but most importantly, connecting `Signal` to a handler of `Command` classes.
+
+Signal signifies an event. A successful network response may produce a signal along with the server's response data, and this will notify all components of the client that subscribes the signal.
+
+This mean the code that reads server's response are scattered instead of in one place. To find the places, search for the signal class occurence, then find out which command class (the signal handler) does the signal get paired with. Then, find the command class and build server's response according to that.
