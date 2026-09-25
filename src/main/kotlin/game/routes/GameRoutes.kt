@@ -23,7 +23,7 @@ class GameRoutes : RouteHandler {
             handle(call, NoAuthGuard) {
                 val payload = call.receiveText().formBodyToMap()
                 Fancam.debug { "Request to init: $payload" }
-                call.respondFile(File("assets/game/init.json"))
+                call.respondFile(File("assets/game/init.xml"))
             }
         }
     }
