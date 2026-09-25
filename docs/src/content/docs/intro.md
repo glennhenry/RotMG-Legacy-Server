@@ -66,3 +66,9 @@ The client uses command architecture by creating class creating `Config` classes
 Signal signifies an event. A successful network response may produce a signal along with the server's response data, and this will notify all components of the client that subscribes the signal.
 
 This mean the code that reads server's response are scattered instead of in one place. To find the places, search for the signal class occurence, then find out which command class (the signal handler) does the signal get paired with. Then, find the command class and build server's response according to that.
+
+### Objects and XML
+
+The game uses XML file to list game data. They are called **objects**. Each of them has a _type_, which refers to their unique identifier, an index that reference their position on external assets file such as the spritesheet image.
+
+The index that the XML files use is a hexadecimal value like `0x164`. Important: the server should list a decimal value.
