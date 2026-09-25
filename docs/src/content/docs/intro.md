@@ -43,3 +43,16 @@ Example:
 ```
 
 It's possible to clean up the JSON into a better looking format since the game never featured multiple languages anyway. This can be done easily by editing the `GetLanguageService.as`.
+
+### Console
+
+The game has a built-in console of "junkbyte". This can be enabled by simply adding these piece of code anywhere `DisplayObject` is available (such as the main class):
+
+```
+import com.junkbyte.console.Cc;
+
+Cc.config.commandLineAllowed = true;
+Cc.startOnStage(this,"`");
+```
+
+where "`" is the hotkey to enable.
