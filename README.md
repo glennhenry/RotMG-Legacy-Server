@@ -1,63 +1,12 @@
 # Encore
 
-<img src="progress.png" alt="encore logo" width=200/>
+<img src="rotmg.png" alt="gameplay image" width=200/>
 
-## About
-
-**Encore** is a Kotlin-based game server template built for rapid game server prototyping. Powered by Ktor and MongoDB in a mostly DIY approach, it aims to be simple and explicit, allowing a frictionless adapation to game server implementation.
-
-The framework is primarily created for private server development. It includes ready-to-use, generic server components and interfaces designed around common challenges encountered during private server implementation.
-
-An empty documentation site is also available to write reverse engineering findings.
-
-Encore [version info](https://github.com/glennhenry/Encore/blob/main/src/main/kotlin/encore/EncoreIdentity.kt): `1.1.3 (Rookie)`
-
-```
-readme template
-
-<img src="progress.png" alt="gameplay image" width=200/>
-
-Server emulator for X, developed by X, closed on X.
+Server emulator for RotMG legacy Flash version 27.7.DECA.
 
 *This project tries to reconstruct the game server-side behavior. Client files and assets are not included. This project is not official and is not associated with the original creators.*
 
 Made with [Encore](https://github.com/glennhenry/Encore).
-```
-
-## Editlist
-
-Server files to edit:
-
-- `venue.xml`, `venue.secret.xml` app configuration
-  - `src/main/kotlin/game/config/CustomConfig.kt` define custom configs
-  - `src/main/kotlin/game/config/SecretConfig.kt` define secret configs
-- `src/main/kotlin/Application.kt` main app configuration including handlers, servers, messaging, etc.
-- `settings.gradle.kts` change project name
-- `build.gradle.kts` change artifact name
-- `src/main/kotlin/game/GameIdentity.kt` app name for flavour
-- `src/test/kotlin/InitMongo.kt` change DB name
-- `assets/` to contains game assets and create subrepo for tracking
-  - `index.html` update with game's SWF
-  - `favicon.ico` update with game's favicon
-
-Docs files to edit:
-
-- `docs/package.json` + `npm install`
-- `docs/astro.config.mjs`
-- `docs/src/components/Giscus.astro`
-- `docs/src/content/docs/intro.md`
-- `docs/src/content/docs/flow.md`
-- `docs/src/assets/` for image in `intro.md`
-- `docs/public/favicon.ico` for docs' favicon
-- This `README.md` + `game.png`
-
-5 total images (replace 4):
-
-- [NO CHANGE] `backstage/favicon.ico` (devtools default icon)
-- [CHANGE] `assets/site/favicon.ico` (game icon) for gameplay website
-- [CHANGE] `docs/public/favicon.ico` (game icon) for docs website
-- [CHANGE] `docs/src/assets/<GameName>.png` (gameplay image) for docs intro
-- [CHANGE] `progress.png` (latest progress image) for readme preview
 
 # Server Manual
 
@@ -84,7 +33,7 @@ You can also run the server from IntelliJ IDE run plugin on `Application.kt`.
 
 ## Build
 
-To build the server, simply run the `build.bat/sh` script. Output will be in `deploy/`. Run the deployment server using `java -jar encore.jar`.
+To build the server, simply run the `build.bat/sh` script. Output will be in `deploy/`. Run the deployment server using `java -jar rotmglsv.jar`.
 
 For manual build:
 
@@ -103,7 +52,7 @@ Every variables can be overriden from OS environment variables. For example, in 
 ```ps1
 $env:ENCORE_DEVMODE = "false"
 $env:ENCORE_SERVER_PORT = "1234"
-java -jar encore.jar
+java -jar rotmglsv.jar
 ```
 
 More information in [Venue.kt](https://github.com/glennhenry/Encore/blob/main/src/main/kotlin/encore/venue/Venue.kt)

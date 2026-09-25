@@ -16,7 +16,7 @@
         <admin enabled="true" />
         <database>
             <mongo>
-                <dbname>CHANGE_ME-prod-DB</dbname>
+                <dbname>ROTMG_LEGACY_SERVER-prod-DB</dbname>
                 <dburl>mongodb://localhost:27017</dburl>
             </mongo>
         </database>
