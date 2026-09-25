@@ -1,0 +1,346 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Backstage</title>
+
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          padding-bottom: 50px;
+        }
+
+        #console {
+          display: block;
+        }
+
+        #monitor {
+          display: none;
+        }
+
+        #command-container {
+          display: none;
+          width: max-content;
+        }
+
+        .tab-row {
+          display: flex;
+          flex-direction: row;
+          gap: 8px;
+        }
+
+        #tabs-container {
+          padding: 8px;
+        }
+
+        #tool-view {
+          padding: 8px;
+        }
+
+        .tab {
+          border: solid 1px gray;
+          border-radius: 8px;
+          padding: 8px;
+        }
+
+        .tab:hover {
+          background-color: darkgray;
+          cursor: pointer;
+        }
+
+        .command-output-container {
+          border: solid 1px gray;
+          width: 600px;
+          height: 400px;
+          overflow-y: scroll;
+          display: flex;
+          flex-direction: column-reverse;
+          font-family: monospace;
+        }
+
+        #command-output-display {
+          flex: 1;
+          padding: 8px;
+        }
+
+        .command-block {
+          margin-bottom: 20px;
+        }
+
+        .command-block-input {
+          font-weight: bold;
+        }
+
+        .command-block-output {
+          margin-left: 4px;
+        }
+
+        .command-input {
+          padding: 8px;
+          display: flex;
+          flex-direction: row;
+          gap: 8px;
+          align-items: center;
+        }
+
+        #command-input-field {
+          border: solid 1px gray;
+          outline: none;
+          padding: 4px;
+          font-family: monospace;
+          width: 300px;
+          overflow-x: auto;
+        }
+
+        #ws-status {
+          font-size: 14px;
+          padding-bottom: 4px;
+        }
+
+        #send-command {
+          padding: 4px;
+          border-radius: 0;
+          border: solid 1px gray;
+        }
+
+        #help-text-drop-area {
+          margin-top: 24px;
+          white-space: break-spaces;
+        }
+
+        #help-text-drop-area ul,
+        #help-text-drop-area ol {
+          margin-left: 10px;
+          padding-left: 10px;
+          margin-top: 10px;
+        }
+
+        #help-text-drop-area li {
+          border-top: 1px solid black;
+          padding-bottom: 8px;
+        }
+
+        #help-text-drop-area code {
+          background: #f4f4f4;
+          padding: 2px 4px;
+          border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="tabs-container">
+    <div class="tab-row">
+        <button id="console-tab" class="tab">Console</button>
+        <button id="monitor-tab" class="tab">Monitor</button>
+        <button id="command-tab" class="tab">Command</button>
+    </div>
+</div>
+<div id="tool-view">
+    <div id="console">
+        <p>Console (not implemented)</p>
+    </div>
+    <div id="monitor">
+        Server Monitor (not implemented)
+    </div>
+    <div id="command-container">
+        <div class="command-output-container">
+            <div id="command-output-display"></div>
+        </div>
+        <div class="command-input">
+            <input id="command-input-field" type="text" placeholder="Input command...">
+            <button id="send-command">Send</button>
+            <p id="send-command-status">Status: idle</p>
+        </div>
+        <div>
+            <p id="ws-status">WebSocket status:</p>
+        </div>
+        <div>
+            <h3>About</h3>
+            <p>This command tool enable interaction with the server during runtime.</p>
+            <p>
+                By implementing the <code style="font-size: large;">Command</code> interface, you can perform
+                various
+                server-side operations
+            </p>
+            <p>such as scanning local files, modifying data, triggering tasks, and more.</p>
+            <p>
+                All of these actions can be executed directly with commands,
+            </p>
+            <p>
+                without changing the server’s code or restarting the server, only implementing the command
+                themselves.
+            </p>
+        </div>
+        <div style="margin-top: 20px;">
+            <h3>Usage & Rules</h3>
+            <p>You have to enter command ID followed by its arguments separated by space.</p>
+            <p>Failing to enter sufficient argument will fail.</p>
+            <p>More arguments than expected will be ignored.</p>
+            <p>Leading and trailing spaces are ignored.</p>
+            <p>Ensure type matches expectation.</p>
+            <p>Some types are converted automatically (e.g., number and boolean may be captured as string).</p>
+            <p>There may be exceptions to the rules depending on the command implementation itself.</p>
+            <p>A correct command syntax: <code>test userabc water 10</code>.</p>
+            <p>Use Ctrl+F to search command.</p>
+            <div id="help-text-drop-area"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    let commandSendStatus = 0
+    let lastOutputNode = null;
+
+    function getCookie(name) {
+      const cookies = document.cookie.split(";").map(c => c.trim());
+      for (const cookie of cookies) {
+        if (cookie.startsWith(name + "=")) {
+          return cookie.substring((name + "=").length);
+        }
+      }
+      return null;
+    }
+
+    // websocket can't send cookie, send via param instead
+    // which is retrieved from cookie set by the server
+    const token = getCookie("backstage-clientId");
+    const websocket = new WebSocket(`ws://127.0.0.1:8080/backstage/ws?token=${token}`);
+
+    websocket.onopen = () => {
+      console.log("WS connected.");
+      updateWsStatusMessage("Status: WS connected.", "green");
+    };
+    websocket.onclose = (event) => {
+      console.log("WS closed.");
+      console.log("Code: " + event.code);
+      console.log("Reason: " + event.reason);
+      console.log("Was clean: " + event.wasClean);
+      updateWsStatusMessage(`Status: WS closed: ${event.reason}`, "red");
+    };
+    websocket.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        const type = msg.type;
+        const payload = msg.payload;
+
+        switch (type) {
+          case "dev:cmdout":
+            updateSendStatusMessage("Status: response received")
+            lastOutputNode.textContent = payload.result;
+            commandSendStatus = 0
+            break;
+          default:
+            console.warn("Unknown message type:", type);
+        }
+      } catch (e) {
+        console.error("Invalid log format", e);
+      }
+    };
+
+    function changeDisplay(id, displayState) {
+      document.getElementById(id).style.display = displayState
+    }
+
+    function installListener() {
+      document.getElementById("console-tab").addEventListener("click", function () {
+        changeDisplay("console", "block")
+        changeDisplay("monitor", "none")
+        changeDisplay("command-container", "none")
+      });
+      document.getElementById("monitor-tab").addEventListener("click", function () {
+        changeDisplay("console", "none")
+        changeDisplay("monitor", "block")
+        changeDisplay("command-container", "none")
+      });
+      document.getElementById("command-tab").addEventListener("click", function () {
+        changeDisplay("console", "none")
+        changeDisplay("monitor", "none")
+        changeDisplay("command-container", "block")
+      });
+
+      document.getElementById("send-command").addEventListener("click", function () {
+        sendCommand()
+      })
+    }
+
+    function updateSendStatusMessage(message) {
+      document.getElementById("send-command-status").textContent = message
+    }
+
+    function updateWsStatusMessage(message, color) {
+      const wsstatus = document.getElementById("ws-status");
+      wsstatus.textContent = message
+      wsstatus.style.color = color
+    }
+
+    function sendCommand() {
+      if (commandSendStatus == 0) {
+        const inputCmd = document.getElementById("command-input-field").value
+
+        updateSendStatusMessage("Status: sending...")
+        commandSendStatus = 1
+
+        const { blockNode, outputNode } = createCommandBlock(inputCmd);
+        document.getElementById("command-output-display").appendChild(blockNode);
+        lastOutputNode = outputNode;
+
+        const request = {
+          type: "dev:cmdin",
+          payload: inputCmd
+        }
+        websocket.send(JSON.stringify(request))
+      } else if (commandSendStatus == 1) {
+        updateSendStatusMessage("Status: Please wait...")
+      }
+    }
+
+    function createCommandBlock(inputMessage) {
+      const blockNode = document.createElement("div")
+      blockNode.className = "command-block"
+
+      const inputNode = document.createElement("div")
+      inputNode.className = "command-block-input"
+      inputNode.textContent = `> ${inputMessage}`
+
+      const outputNode = document.createElement("div")
+      outputNode.className = "command-block-output"
+      outputNode.textContent = "..."
+
+      blockNode.appendChild(inputNode)
+      blockNode.appendChild(outputNode)
+
+      return { blockNode, outputNode }
+    }
+
+    function fetchHelpMessage() {
+      fetch("/backstage/cmd-help-text")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          document.getElementById("help-text-drop-area").innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error sending command:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      installListener()
+      fetchHelpMessage()
+    });
+</script>
+
+</html>

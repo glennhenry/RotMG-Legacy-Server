@@ -1,0 +1,77 @@
+<div id="giscus-container" class="giscus"></div>
+
+<script>
+  function getCurrentTheme() {
+    const htmlTheme = document.documentElement.getAttribute("data-theme");
+    return htmlTheme === "dark" ? "catppuccin_mocha" : "catppuccin_latte";
+  }
+
+  /* CHANGEME
+     Giscus setup (only if code is posted on GitHub; if not, please empty the fields):
+     1. Create discussion on Github via settings to enable discussion.
+     2. Delete all category except "General".
+     3. Create category called "Giscus".
+     4. Create one empty discussion
+     5. Go to 'https://giscus.app/', insert repo name and category name of "Giscus".
+     6. Copy and paste here the repo-id and category-id.
+     7. Also update the data-repo
+     8. Comment will show up under "Giscus" category for each page.
+  */
+
+  function loadGiscus(theme) {
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    /* CHANGEME */
+    script.setAttribute("data-repo", "glennhenry/Encore");
+    script.setAttribute("data-repo-id", "R_kgDOQJ63CA");
+    script.setAttribute("data-category", "Giscus");
+    script.setAttribute("data-category-id", "DIC_kwDOQJ63CM4C3Pfx");
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute("data-theme", theme);
+    script.setAttribute("data-lang", "en");
+    script.crossOrigin = "anonymous";
+    script.async = true;
+
+    document.getElementById("giscus-container").appendChild(script);
+  }
+
+  function changeGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+
+    iframe.contentWindow.postMessage(
+      {
+        giscus: {
+          setConfig: { theme },
+        },
+      },
+      "https://giscus.app"
+    );
+  }
+
+  function is404() {
+    const titleEl = document.querySelector("h1[data-page-title]");
+    const pageTitle = titleEl?.textContent?.trim();
+    return pageTitle === "404";
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    if (!is404()) {
+      const theme = getCurrentTheme();
+      loadGiscus(theme);
+    }
+  });
+
+  const observer = new MutationObserver(() => {
+    changeGiscusTheme(getCurrentTheme());
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+</script>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<venue>
+    <!-- This file contains the application configuration.
+         This includes the framework config and the application custom config.
+         The structure is based on the definition in the file `EncoreConfig` and `CustomConfig` 
+         Use `venue.secret.xml` for sensitive data -->
+
+    <!-- Encore config -->
+    <encore>
+        <devMode>true</devMode>
+        <server>
+            <host>127.0.0.1</host>
+            <port>8080</port>
+            <socketPort>7777</socketPort>
+        </server>
+        <admin enabled="true" />
+        <database>
+            <mongo>
+                <dbname>CHANGE_ME-prod-DB</dbname>
+                <dburl>mongodb://localhost:27017</dburl>
+            </mongo>
+        </database>
+        <fancam>
+            <level>TRACE</level>
+            <color enabled="true">
+                <useBackgroundColor>true</useBackgroundColor>
+            </color>
+            <formatting>
+                <fileNamePadding>25</fileNamePadding>
+                <tagPadding>10</tagPadding>
+                <maxLineLength>500</maxLineLength>
+                <maxFileSize>5</maxFileSize>
+                <maxFileRotation>5</maxFileRotation>
+            </formatting>
+        </fancam>
+    </encore>
+
+    <!-- Custom config, follow `CustomConfig` definition in code -->
+    <custom>
+
+    </custom>
+</venue>
