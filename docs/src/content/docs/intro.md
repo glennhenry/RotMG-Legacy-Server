@@ -92,3 +92,85 @@ When you open the game on `realmofthemadgod.com` (not Kongregate, Kabam, or anyw
 In other word, what determine whether a user is logged in or not is their Flash cookie instead of the server. The server merely sends the account information like account ID, name, is email verified, character data, and many more.
 
 So, it's possible for guest account to have every stuff, because guest or not is determined by cookie, and server can return anything.
+
+### Socket Server
+
+The gameplay is done with a socket connection. The communication by default uses an encryption of RC4. This can be disabled by editing the client. Relevant networking code are located in `kabam.lib.net.impl` and `kabam.rotmg.messaging`. The outgoing directory contains all messages sent to server, while the incoming directory contains all client expectation from server.
+
+On connect to the socket, the client will always send the Adobe policy file request. After server responds to this successfully, the `onConnected` signal will be dispatched and the next message to be sent by client is the `Hello` message. This can be seen in `GameServerConnectionConcrete.as@line 961`.
+
+The low-level networking logic which involves packing or encoding/decoding message is located in `SocketServer.as`. The `sendMessage` is used to initiate, while the `sendPendingMessage` is used to actually send the message to the server. The `onSocketData` on the other hand contains the code that reads the message from server.
+
+#### Message List
+
+Apparently, the messaging system structure itself like a linked-list. A `Message` (`kabam.net.lib.impl.Message`) is a representation of an incoming server message or outgoing client message. Each message has a next and previous reference of message.
+
+First, the list is initialized with a placeholder for head and tail. When `SocketServer.sendMessage` is called, this will set that message as the new tail, and also changing the previous tail's next to this. This creates a queue-like system where earlier initiated `sendMessage` will be guaranteed to be sent first than a later initiated `sendMessage` (first-in, first-out). It also guarantees that no message will be lost as they are queued until socket connection is graceful.
+
+Example:
+
+```
+head = .
+tail = .
+
+sendMessage(A)
+tail.next = A
+. -> A
+head = .
+tail = A
+
+sendMessage(B)
+A.next = B
+. -> A -> B
+head = .
+tail = B
+
+sendMessage(C)
+B.next = C
+. -> A -> B -> C
+head = .
+tail = C
+```
+
+Then, when the socket is connected, `sendPendingMessages` will be called and the processing will start from the next of head, which is `A`, and progress further until there are no more next element.
+
+#### Outgoing Wire Format
+
+A `Message` is a representation of an incoming server message or outgoing client message.
+
+Each message is associated with a message ID, basically an opcode which is a number. The exhaustive list is listed at `rotmg.messaging.impl.GameServerConnection`. Each operation is associated with a `Message` class that act as the structure of that message.
+
+**The data format for message is binary**. It doesn't use specific format like ProtoBuf, JSON, MsgPack, or anything else, but a raw binary format written by each classes that implements the `Message` class. Implementing the `Message` class means implementing the method `writeToOutput`, which should contains the packaging logic of that class's data.
+
+For example, the first `Hello` message has an ID of 83. It encapsulates various data like `buildVersion`, `gameId`, `guid`, `password`, and many more. The `writeToOutput` contains the logic to package all these data into the binary format. This utilizes Flash built-in functions like `writeUTF`, `writeInt`, etc.
+
+:::note
+The `Hello` message is a fixed message sent at the beginning of connection. It sort of act like the authentication to the socket server. The `guid`, `password`, and `secret` are specifically RSA encrypted.
+:::
+
+So, each `Message` class's `writeToOutput` produces a binary data. This binary data is then modified further inside `SocketServer.sendPendingMessage`.
+
+- If encryption is enabled, that data will be encrypted with the set outgoing cipher.
+- Before the data, an **integer** of the data length + 5 is written. This represents the length of the entire payload, where its the data length itself with 4 bytes for this integer, and another 1 byte for the next...
+- A byte which is the message ID.
+
+This structures the message like
+
+```
+4 bytes int               1 byte byte
+[messageLength + 5 bytes] [message ID]    [data]
+```
+
+#### Incoming Wire Format
+
+The message response from server is very similar with the outgoing message from client.
+
+- An integer (4 bytes) is read, representing the entire message length.
+- An unsigned byte (1 byte) is read, representing the message ID.
+- The data payload, with optional decryption if incoming cipher was set.
+
+Then, the client requires the incoming message structure to be same as what the client expects. Those typically implements the `IncomingMessage` and the method `parseFromInput` which does similar like `writeToOutput` with Flash built-in method like `readUnsignedByte`, `readInt`, `readShort`, etc.
+
+:::tip
+If outgoing cipher is set, then so is the incoming. This can be modified from `Parameters.as` `ENABLE_ENCRYPTION`.
+:::
