@@ -1,9 +1,11 @@
-import bootstrap.*
+import bootstrap.acceptsTerminalInput
+import bootstrap.installEncore
+import bootstrap.logStartupInformation
+import bootstrap.shutdownHook
 import encore.EncoreIdentity
 import encore.EncoreIdentity.celebrate
 import encore.backstage.BackstageRoutes
 import encore.backstage.command.ExampleCommand
-import game.context.ServerContext
 import encore.definition.GameReference
 import encore.network.lifecycle.PlayerLifecycle
 import encore.network.stage.GameStage
@@ -20,9 +22,12 @@ import encore.websocket.handler.WsCommandHandler
 import game.GameIdentity
 import game.Globals
 import game.context.RealContextFactory
+import game.context.ServerContext
 import game.mongo.RuntimeMongoCollections
 import game.routes.GameRoutes
 import game.routes.fileRoutes
+import game.socket.RotmgFancantGuide
+import game.socket.RotmgHandler
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -178,10 +183,12 @@ fun GameStageInitContext.fanchantGuides() {
     // register fanchant guides...
 
     // guide()
+    guide(RotmgFancantGuide())
 }
 
 fun GameStageInitContext.handlers(serverContext: ServerContext) {
     // register handlers
 
     // handler()
+    handler(RotmgHandler())
 }
