@@ -12,6 +12,22 @@ _This project tries to reconstruct the game server-side behavior. This project i
 
 Made with [Encore](https://github.com/glennhenry/Encore).
 
+# Setup
+
+## RSA Private Key
+
+_This setup is only needed for production system._
+
+There is a usage of RSA encryption that involves public and private key. The game encrypts a unique player identifier (GUID) and in-game password. Another credentials of account secret is also encrypted, but this is deprecated since it is only used for third-party accounts like Kongregate, Kabam, or Steam, and not the web account that is used to play in this server.
+
+The `venue.secret.xml` provides a fixed private key which is the compatible with the client's hardcoded public key. This private key can be used for local use and development.
+
+Although the credentials transmitted does not involve any real information such as email or payment details, a good practice of cryptography for production system is re-generating the pair of public and private key.
+
+1. Generate RSA key (1024 bit) via OpenSSL or online tools like [RSA Gen](https://cryptotools.net/rsagen). Then, convert the private key into Java compatible format with online tools like [PEM Convert](https://8gwifi.org/pemconvert.jsp).
+2. Patch the `client.swf` at `com.company.assembleegameclient.parameters.Parameters.as` to edit the `RSA_PUBLIC_KEY`.
+3. Then, update the server's private key inside `privateRSAKey` of `venue.secret.xml`.
+
 # Server Manual
 
 This guide assumes default settings set from the `venue.xml` file.

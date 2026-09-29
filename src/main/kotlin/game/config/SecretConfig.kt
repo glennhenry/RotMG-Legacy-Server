@@ -12,5 +12,6 @@ import encore.annotation.runtime.VenueKey
  * All field is preferred to be immutable.
  */
 data class SecretConfig(
-    val dummy: Int = 0
+    @VenueKey("privateRSAKey")
+    val privateRSAKey: String
 )
