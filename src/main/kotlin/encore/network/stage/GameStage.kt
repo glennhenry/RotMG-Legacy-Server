@@ -260,13 +260,16 @@ class GameStage(
             error(
                 buildString {
                     appendLine("Fanchant handler type mismatch")
-                    appendLine("Handler         : ${handler.className()}")
-                    appendLine("Handler expects : ${handler.expectedFanchantClass.qualifiedName}")
-                    appendLine("Actual message  : ${context.fanchant::class.qualifiedName}")
-                    appendLine("Fanchant type   : '${context.fanchant.type}'")
+                    appendLine("        Handler         : ${handler.className()}")
+                    appendLine("        Handler expects : ${handler.expectedFanchantClass.qualifiedName}")
+                    appendLine("        Actual message  : ${context.fanchant::class.qualifiedName}")
+                    appendLine("        Fanchant type   : '${context.fanchant.type}'")
                     appendLine()
-                    appendLine("> Ensure FanchantHandler<T> generic type matches the actual message class that the routing type is supposed to be.")
-                    appendLine("> e.g., handler with 'login' fanchantType shouldn't declare 'T' as `MoveMessage` when it should be `LoginMessage`.")
+                    appendLine("        > Ensure FanchantHandler<T> generic type matches the actual message class that the routing type is supposed to be.")
+                    appendLine("        > e.g., handler with 'login' fanchantType shouldn't declare 'T' as `MoveMessage` when it actually expects `LoginMessage`.")
+                    appendLine()
+                    appendLine("        > If you have already created a FanchantGuide but haven't created a matching handler (i.e., custom fanchant guide but fallback to AllRounderHandler),")
+                    appendLine("         then you must create a matching handler that **matches that guide's Fanchant class output and type**.")
                 }
             )
         }

@@ -1,7 +1,6 @@
 package encore.network.fanchant.guide
 
 import encore.network.fanchant.Fanchant
-import encore.utils.safeAsciiString
 import encore.network.fanchant.AllRounderFanchant
 
 /**
@@ -13,17 +12,17 @@ import encore.network.fanchant.AllRounderFanchant
  *
  * Behavior:
  * - [verify] always returns `true`.
- * - [tryDecode] always succeeds, raw bytes are converted into string via [safeAsciiString].
+ * - [tryDecode] always succeeds, raw bytes are returned as-is.
  * - [materialize] wraps the decoded string into a [AllRounderFanchant].
  */
-class AllRounderFanchantGuide : FanchantGuide<String> {
+class AllRounderFanchantGuide : FanchantGuide<ByteArray> {
     override fun verify(data: ByteArray): Boolean = true
 
-    override fun tryDecode(data: ByteArray): DecodeResult<String> {
-        return DecodeResult.Success(data.safeAsciiString())
+    override fun tryDecode(data: ByteArray): DecodeResult<ByteArray> {
+        return DecodeResult.Success(data)
     }
 
-    override fun materialize(decoded: String): Fanchant {
+    override fun materialize(decoded: ByteArray): Fanchant {
         return AllRounderFanchant(decoded)
     }
 }
