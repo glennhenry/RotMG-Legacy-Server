@@ -23,11 +23,11 @@ import game.GameIdentity
 import game.Globals
 import game.context.RealContextFactory
 import game.context.ServerContext
+import game.domain.RotmgFallbackHandler
 import game.mongo.RuntimeMongoCollections
 import game.routes.GameRoutes
 import game.routes.fileRoutes
-import game.socket.RotmgFancantGuide
-import game.socket.RotmgHandler
+import game.socket.fanchant.RotmgFancantGuide
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -190,5 +190,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     // register handlers
 
     // handler()
-    handler(RotmgHandler())
+    handler(RotmgFallbackHandler())
 }
