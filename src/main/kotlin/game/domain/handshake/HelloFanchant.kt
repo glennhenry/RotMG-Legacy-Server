@@ -6,7 +6,7 @@ import game.utils.autoToString
 import java.io.DataInputStream
 
 /**
- * Represent the `Hello` message sent by client.
+ * Represent the `Hello` (83) message sent by client.
  */
 class HelloFanchant(messageId: Int) : RotmgFanchant {
     override val type: String = messageId.toString()
