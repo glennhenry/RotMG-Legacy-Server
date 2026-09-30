@@ -2,7 +2,6 @@ package encore.network.handler
 
 import encore.network.fanchant.Fanchant
 import encore.network.transport.Connection
-import kotlin.reflect.KClass
 
 /**
  * Represent a handler for network messages.
@@ -45,13 +44,6 @@ interface FanchantHandler<T : Fanchant> {
      * `MoveMessage` at runtime and fail.
      */
     val fanchantType: String
-
-    /**
-     * This handler expected fanchant class.
-     * This should be same as the [T] fanchant type.
-     * Use `Fanchant::class`.
-     */
-    val expectedFanchantClass: KClass<T>
 
     /**
      * Handles an incoming [Fanchant] with the given handler [ctx].

@@ -95,7 +95,6 @@ class ExampleHandlerTest {
  */
 class DotSeparatedHandler : FanchantHandler<DotSeparatedFanchant> {
     override val fanchantType: String = "EX"
-    override val expectedFanchantClass: KClass<DotSeparatedFanchant> = DotSeparatedFanchant::class
 
     /**
      * `with(ctx)` gives developer QoL to access `connection` and `message` simpler.

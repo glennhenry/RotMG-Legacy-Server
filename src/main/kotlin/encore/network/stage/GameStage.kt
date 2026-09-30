@@ -9,6 +9,7 @@ import encore.network.fanchant.guide.AllRounderFanchantGuide
 import encore.network.fanchant.guide.DecodeResult
 import encore.network.fanchant.guide.FanchantGuide
 import encore.network.fanchant.guide.FanchantGuideRegistry
+import encore.network.handler.AllRounderHandler
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
 import encore.network.lifecycle.PlayerLifecycle
@@ -256,27 +257,31 @@ class GameStage(
             fanchant = fanchant
         )
 
-        if (!handler.expectedFanchantClass.isInstance(context.fanchant)) {
-            error(
+        try {
+            @Suppress("UNCHECKED_CAST")
+            handler as FanchantHandler<Fanchant>
+            if (handler::class == AllRounderHandler::class) {
+                // edge case: a custom guide exist, but handler for it isn't
+                // this will be routed to AllRounderHandler
+                // to avoid cast fail, "undo" the materialized fanchant into AllRounderFanchant
+                // so that AllRounderHandler can handle gracefully
+                handler.handle(HandlerContext(connection, allRounderFanchant(data)))
+            } else {
+                handler.handle(context)
+            }
+        } catch (e: ClassCastException) {
+            Fancam.error(e) {
                 buildString {
-                    appendLine("Fanchant handler type mismatch")
+                    appendLine("Fanchant handler generic type mismatch")
                     appendLine("        Handler         : ${handler.className()}")
-                    appendLine("        Handler expects : ${handler.expectedFanchantClass.qualifiedName}")
-                    appendLine("        Actual message  : ${context.fanchant::class.qualifiedName}")
+                    appendLine("        Got message     : ${context.fanchant::class.qualifiedName}")
                     appendLine("        Fanchant type   : '${context.fanchant.type}'")
                     appendLine()
-                    appendLine("        > Ensure FanchantHandler<T> generic type matches the actual message class that the routing type is supposed to be.")
-                    appendLine("        > e.g., handler with 'login' fanchantType shouldn't declare 'T' as `MoveMessage` when it actually expects `LoginMessage`.")
-                    appendLine()
-                    appendLine("        > If you have already created a FanchantGuide but haven't created a matching handler (i.e., custom fanchant guide but fallback to AllRounderHandler),")
-                    appendLine("         then you must create a matching handler that **matches that guide's Fanchant class output and type**.")
+                    appendLine("        > Ensure FanchantHandler<T> generic type matches the actual message class that it receives.")
+                    appendLine("        > e.g., A handler with 'login' fanchantType shouldn't declare 'T' as `MoveMessage` when it actually expects `LoginMessage`.")
                 }
-            )
+            }
         }
-
-        @Suppress("UNCHECKED_CAST")
-        handler as FanchantHandler<Fanchant>
-        handler.handle(context)
 
         return fanchant.type
     }

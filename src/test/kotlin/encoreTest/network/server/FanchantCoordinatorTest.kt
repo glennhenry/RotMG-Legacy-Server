@@ -33,7 +33,6 @@ class FanchantCoordinatorTest {
 
 class Handler1 : FanchantHandler<ExFc> {
     override val fanchantType: String = "type1"
-    override val expectedFanchantClass: KClass<ExFc> = ExFc::class
     override suspend fun handle(ctx: HandlerContext<ExFc>) {
         println("Handler1 - handle")
     }
@@ -41,7 +40,6 @@ class Handler1 : FanchantHandler<ExFc> {
 
 class Handler2 : FanchantHandler<ExFc> {
     override val fanchantType: String = "type1"
-    override val expectedFanchantClass: KClass<ExFc> = ExFc::class
     override suspend fun handle(ctx: HandlerContext<ExFc>) {
         println("Handler2 - handle")
     }

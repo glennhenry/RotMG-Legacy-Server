@@ -16,6 +16,8 @@ import kotlin.collections.iterator
  * See [flatten].
  */
 class XMLFlattener {
+    private var isSecret = false
+
     /**
      * Flatten an XML structure into a flat key-value map.
      *
@@ -35,6 +37,7 @@ class XMLFlattener {
      */
     fun flatten(xmlFile: File, xmlRoot: String): Map<String, String> {
         Fancam.trace(Tags.Xml) { "Parsing ${xmlFile.name}; root='$xmlRoot'" }
+        isSecret = xmlFile.name.contains("secret")
 
         val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val doc = builder.parse(InputSource(StringReader(xmlFile.readText())))
@@ -79,7 +82,11 @@ class XMLFlattener {
             val key = "$path._${attr.nodeName}"
             val value = attr.nodeValue
 
-            Fancam.trace(Tags.Xml) { "Attribute $key='$value'" }
+            if (!isSecret) {
+                Fancam.trace(Tags.Xml) { "Attribute $key='$value'" }
+            } else {
+                Fancam.trace(Tags.Xml) { "Attribute $key='<CENSORED>'" }
+            }
 
             result[key] = value
         }
@@ -91,7 +98,11 @@ class XMLFlattener {
         if (elementChildren.isEmpty()) {
             val value = element.textContent.trim()
             if (value.isNotEmpty()) {
-                Fancam.trace(Tags.Xml) { "Value $path='$value'" }
+                if (!isSecret) {
+                    Fancam.trace(Tags.Xml) { "Value $path='$value'" }
+                } else {
+                    Fancam.trace(Tags.Xml) { "Value $path='<CENSORED>'" }
+                }
                 result[path] = value
             }
         }

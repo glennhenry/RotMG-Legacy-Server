@@ -16,7 +16,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import testUtils.TestFancam
-import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -129,7 +128,7 @@ class GameStageTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `dispatch fails when the handler associate type and message class wrongly`() = runTest {
+    fun `cast fails when the handler mismatch type and generic class`() = runTest {
         TestFancam.create()
         val fancam = TestFancam.get()
 
@@ -145,7 +144,7 @@ class GameStageTest {
         gameStage.activateConnection(connection)
 
         // this will materialize into fc1 message by guide1
-        // that handler123 will be responsible to handle
+        // that handler123 will be responsible to handle by type
         val packet = "a12345".toByteArray()
 
         // send the packet
@@ -155,20 +154,24 @@ class GameStageTest {
         advanceUntilIdle()
 
         // assert that a log error was called
-        fancam.assertLogHas(Level.Error, 1) {
-            it.throwable?.message?.contains("Fanchant handler type mismatch") ?: false
+        fancam.assertLogHas(Level.Error, withinLastN = 1) {
+            it.throwable?.message?.contains("cannot be cast") == true && it.message.invoke()
+                .contains("Fanchant handler generic type mismatch")
         }
+
+        connection.shutdown()
     }
 
     class Handler123 : FanchantHandler<Fc3> {
         // it handles message with routing type "type-fc1"
-        // but wrongly declares T as Fc3
-        // this will error when a message is materialized and type is "type-fc1" but is not actually Fc4
+        // it wrongly declares T as Fc3,
+        // because type-fc1 is for Fc1 message and not Fc3
         override val fanchantType: String = "type-fc1"
-        override val expectedFanchantClass: KClass<Fc3> = Fc3::class
 
         override suspend fun handle(ctx: HandlerContext<Fc3>) {
-            throw AssertionError("should fail before this")
+            // actual message is materailized to Fc1 which doesn't have this property
+            ctx.fanchant.failAccess
+            return
         }
     }
 
@@ -331,6 +334,7 @@ class Fc2(val payload: String) : Fanchant {
 class Fc3(val payload: String) : Fanchant {
     override val type: String = "type-fc3"
     override fun toString(): String = "Fc3($payload)"
+    val failAccess: Int = 1
 }
 
 class Fc4(val payload: String) : Fanchant {
@@ -340,7 +344,6 @@ class Fc4(val payload: String) : Fanchant {
 
 class Fc1Handler : FanchantHandler<Fc1> {
     override val fanchantType: String = "type-fc1"
-    override val expectedFanchantClass: KClass<Fc1> = Fc1::class
     override suspend fun handle(ctx: HandlerContext<Fc1>) {
         ctx.connection.write(byteArrayOf(1, 1, 1))
     }
@@ -348,7 +351,6 @@ class Fc1Handler : FanchantHandler<Fc1> {
 
 class Fc2Handler : FanchantHandler<Fc2> {
     override val fanchantType: String = "type-fc2"
-    override val expectedFanchantClass: KClass<Fc2> = Fc2::class
     override suspend fun handle(ctx: HandlerContext<Fc2>) {
         ctx.connection.write(byteArrayOf(2, 2, 2))
     }
@@ -356,7 +358,6 @@ class Fc2Handler : FanchantHandler<Fc2> {
 
 class Fc3Handler : FanchantHandler<Fc3> {
     override val fanchantType: String = "type-fc3"
-    override val expectedFanchantClass: KClass<Fc3> = Fc3::class
     override suspend fun handle(ctx: HandlerContext<Fc3>) {
         ctx.connection.write(byteArrayOf(3, 3, 3))
     }
@@ -364,7 +365,6 @@ class Fc3Handler : FanchantHandler<Fc3> {
 
 class Fc4Handler : FanchantHandler<Fc4> {
     override val fanchantType: String = "type-fc4"
-    override val expectedFanchantClass: KClass<Fc4> = Fc4::class
     override suspend fun handle(ctx: HandlerContext<Fc4>) {
         throw Exception("Requested on Handler9")
     }
