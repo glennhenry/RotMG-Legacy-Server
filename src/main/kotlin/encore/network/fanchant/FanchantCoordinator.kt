@@ -66,8 +66,8 @@ class FanchantCoordinator {
                 } else {
                     appendLine("[SOCKET DISPATCH] -> success")
                 }
-                appendLine("$INDENT fanchant (str): $fanchant")
-                append("$INDENT handlers      : ${handler?.className() ?: allRounderHandler.className()}")
+                appendLine("$INDENT fanchant.toString(): $fanchant")
+                append("$INDENT handler            : ${handler?.className() ?: allRounderHandler.className()}")
             }
         }
 

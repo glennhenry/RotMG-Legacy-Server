@@ -3,6 +3,7 @@ package encore.network.stage
 import encore.fancam.Fancam
 import encore.fancam.INDENT
 import encore.fancam.Tags
+import encore.network.fanchant.AllRounderFanchant
 import encore.network.fanchant.Fanchant
 import encore.network.fanchant.FanchantCoordinator
 import encore.network.fanchant.guide.AllRounderFanchantGuide
@@ -211,7 +212,8 @@ class GameStage(
                         buildString {
                             appendLine("[SOCKET DECODE] -> success")
                             appendLine("$INDENT type   : ${fanchant.type}")
-                            append("$INDENT guide  : ${guide.className()}")
+                            appendLine("$INDENT guide  : ${guide.className()}")
+                            append("$INDENT class  : ${fanchant.className()}")
                         }
                     }
 
@@ -265,7 +267,7 @@ class GameStage(
                 // this will be routed to AllRounderHandler
                 // to avoid cast fail, "undo" the materialized fanchant into AllRounderFanchant
                 // so that AllRounderHandler can handle gracefully
-                handler.handle(HandlerContext(connection, allRounderFanchant(data)))
+                handler.handle(HandlerContext(connection, AllRounderFanchant(data, fanchant.type)))
             } else {
                 handler.handle(context)
             }
