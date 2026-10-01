@@ -35,6 +35,7 @@ fun Route.fileRoutes() {
             call.respondFile(file)
         } else {
             Fancam.warn { "Missing file: ${file.path}" }
+            call.respond(HttpStatusCode.NotFound)
         }
     }
     get("/sfx/player/{filename}") {
@@ -44,6 +45,7 @@ fun Route.fileRoutes() {
             call.respondFile(file)
         } else {
             Fancam.warn { "Missing file: ${file.path}" }
+            call.respond(HttpStatusCode.NotFound)
         }
     }
     get("/sfx/monster/{filename}") {
@@ -53,6 +55,7 @@ fun Route.fileRoutes() {
             call.respondFile(file)
         } else {
             Fancam.warn { "Missing file: ${file.path}" }
+            call.respond(HttpStatusCode.NotFound)
         }
     }
     get("/music/{filename}") {
