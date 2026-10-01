@@ -30,6 +30,7 @@ import game.domain.world.LoadHandler
 import game.domain.world.MoveHandler
 import game.domain.world.PlayerShootHandler
 import game.domain.world.UpdateAckHandler
+import game.domain.world.gameplay.ShootAckHandler
 import game.mongo.RuntimeMongoCollections
 import game.routes.GameRoutes
 import game.routes.fileRoutes
@@ -203,4 +204,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(UpdateAckHandler(serverContext))
     handler(MoveHandler())
     handler(PlayerShootHandler())
+    handler(ShootAckHandler())
 }
