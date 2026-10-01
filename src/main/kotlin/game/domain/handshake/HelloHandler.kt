@@ -11,18 +11,10 @@ class HelloHandler : FanchantHandler<HelloFanchant> {
     override val fanchantType: String = RotmgMessageIds.HELLO.toString()
 
     override suspend fun handle(ctx: HandlerContext<HelloFanchant>) = with(ctx) {
-        val assetsList = listOf(
-            File("assets/game/xml/Objects.xml"),
-            File("assets/game/xml/Pets.xml"),
-            File("assets/game/xml/Players.xml"),
-            File("assets/game/xml/StaticObjects.xml")
-        )
-        val extraAssetsList = listOf(
-            File("assets/game/xmlc/Objects.xml"),
-            File("assets/game/xmlc/Particles.xml"),
-            File("assets/game/xmlc/Regions.xml"),
-            File("assets/game/xmlc/GroundTypes.xml")
-        )
+        val xmlDir = requireNotNull(File("assets/game/xml").listFiles()) { "Fatal: XML dir doesn't exist" }
+        val extraXmlDir = requireNotNull(File("assets/game/xmlc").listFiles()) { "Fatal: XMLC dir doesn't exist" }
+        val assetsList = xmlDir.filter { it.extension == "xml" }
+        val extraAssetsList = extraXmlDir.filter { it.extension == "xml" }
 
         val msg = MapInfoMessage(
             width = 200,
