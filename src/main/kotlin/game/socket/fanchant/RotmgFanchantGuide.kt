@@ -8,7 +8,7 @@ import game.domain.account.CreateFanchant
 import game.domain.world.GotoAckFanchant
 import game.domain.world.LoadFanchant
 import game.domain.world.MoveFanchant
-import game.domain.world.PlayerShootFanchant
+import game.domain.world.gameplay.PlayerShootFanchant
 import game.domain.world.UpdateAckFanchant
 import game.domain.world.gameplay.ShootAckFanchant
 import game.socket.RotmgMessageIds

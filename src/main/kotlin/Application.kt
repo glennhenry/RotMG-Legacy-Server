@@ -28,7 +28,7 @@ import game.domain.handshake.HelloHandler
 import game.domain.world.GotoAckHandler
 import game.domain.world.LoadHandler
 import game.domain.world.MoveHandler
-import game.domain.world.PlayerShootHandler
+import game.domain.world.gameplay.PlayerShootHandler
 import game.domain.world.UpdateAckHandler
 import game.domain.world.gameplay.ShootAckHandler
 import game.mongo.RuntimeMongoCollections
@@ -200,7 +200,7 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(HelloHandler())
     handler(GotoAckHandler())
     handler(CreateHandler())
-    handler(LoadHandler())
+    handler(LoadHandler(serverContext))
     handler(UpdateAckHandler(serverContext))
     handler(MoveHandler())
     handler(PlayerShootHandler())

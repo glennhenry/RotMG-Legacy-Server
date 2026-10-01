@@ -10,7 +10,6 @@ class MoveHandler : FanchantHandler<MoveFanchant> {
     override val fanchantType: String = RotmgMessageIds.MOVE.toString()
 
     override suspend fun handle(ctx: HandlerContext<MoveFanchant>) = with(ctx) {
-        fanchant.time
         Fancam.debug {
             buildString {
                 appendLine(

@@ -1,23 +1,44 @@
 package game.domain.world
 
+import encore.acts.ActScope
+import encore.acts.template.ForeverTimerAct
+import encore.acts.template.ForeverTimerConcept
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
-import game.domain.data.ObjectData
-import game.domain.data.ObjectStatusData
-import game.domain.data.StatData
-import game.domain.data.StatDataConstants
-import game.domain.data.TileData
-import game.domain.data.WorldPosData
+import game.context.ServerContext
+import game.domain.data.*
+import game.domain.world.gameplay.EnemyShootMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 
-class LoadHandler : FanchantHandler<LoadFanchant> {
+class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<LoadFanchant> {
     override val fanchantType: String = RotmgMessageIds.LOAD.toString()
 
     override suspend fun handle(ctx: HandlerContext<LoadFanchant>) = with(ctx) {
         // example of vault portal object (1824) at x=55 y=55
         // a player object
         // and enemy mobs
+        val mobs = ObjectData(
+            // shtrs Forgotten King
+            objectType = 29039,
+            status = ObjectStatusData(
+                objectId = 3,
+                pos = WorldPosData(7, 8),
+                stats = listOf(
+                    StatData(
+                        statType = StatDataConstants.SIZE_STAT,
+                        statValue = 200
+                    ),
+                )
+            )
+        )
+        // temporarily store object data in player's connection
+        // should make some subunit of world objects table
+        // 400 is an example of mobs hp
+        connection.put("mobs", mobs to 400)
+
         val obj = listOf(
             ObjectData(
                 objectType = 1824,
@@ -28,20 +49,7 @@ class LoadHandler : FanchantHandler<LoadFanchant> {
                 )
             ),
             createPlayerObject(),
-            // shtrs Forgotten King
-            ObjectData(
-                objectType = 29039,
-                status = ObjectStatusData(
-                    objectId = 3,
-                    pos = WorldPosData(7, 8),
-                    stats = listOf(
-                        StatData(
-                            statType = StatDataConstants.SIZE_STAT,
-                            statValue = 200
-                        ),
-                    )
-                )
-            ),
+            mobs
         )
 
         val msg = UpdateMessage(
@@ -51,6 +59,88 @@ class LoadHandler : FanchantHandler<LoadFanchant> {
         )
 
         connection.write(createMessage(RotmgMessageIds.UPDATE, msg))
+
+        // update of mobs movement
+        // advanced-ly, this may tracks player, chase, or go to set position
+        // NOT WORKING YET...
+        // the plan is: delete old object, create new object
+        // but unsure if delete/recreate means reseting the mobs HP
+//        if (connection.get("updatetimer") == null) {
+//            serverContext.stageActDirector.run(
+//                act = RepeatingTimerAct(),
+//                concept = RepeatingTimerConcept(
+//                    initialDelay = 2.seconds,
+//                    repetition = 20,
+//                    interval = 3.seconds
+//                ) {
+//                    val msg = createMessage(
+//                        messageId = RotmgMessageIds.UPDATE,
+//                        outgoing = UpdateMessage(
+//                            newTiles = emptyList(),
+//                            newObjects = listOf(
+//                                ObjectData(
+//                                    objectType = 29039,
+//                                    status = ObjectStatusData(
+//                                        objectId = prevObjId + 1,
+//                                        pos = WorldPosData(
+//                                            x = Random.nextInt(4, 8),
+//                                            y = Random.nextInt(4, 8)
+//                                        ),
+//                                        stats = listOf(
+//                                            StatData(
+//                                                statType = StatDataConstants.SIZE_STAT,
+//                                                statValue = 200
+//                                            ),
+//                                        )
+//                                    )
+//                                ).also { mobs = it }
+//                            ),
+//                            drops = listOf(prevObjId - 1)
+//                        )
+//                    )
+//                    connection.write(msg)
+//                },
+//                scope = ActScope(connection.address, connection.connectionScope)
+//            )
+//            connection.put("updatetimer", true)
+//            prevObjId += 1
+//        }
+
+        // enemy shoot repeatedly after 3 seconds every 2 seconds until it dies
+        val actId = serverContext.stageActDirector.run(
+            act = ForeverTimerAct(),
+            concept = ForeverTimerConcept(
+                initialDelay = 3.seconds,
+                interval = 1.seconds
+            ) {
+                val msg = createMessage(
+                    messageId = RotmgMessageIds.ENEMYSHOOT,
+                    // this works by:
+                    // refer to a particular enemy
+                    // refer the projectile index
+                    // this limit something: arbitrary mobs can't shoot arbitrary projectile
+                    // e.g., Oryx 2 can't shoot King's fire tentacles
+                    outgoing = EnemyShootMessage(
+                        // unique identifier of bullet
+                        bulletId = 11,
+                        // this is used to refer to the Objects.xml shtrs Forgotten King
+                        ownerId = mobs.status.objectId,
+                        // use the index 2 bullet which is Fire Bullet
+                        bulletType = 2,
+                        startPos = mobs.status.pos,
+                        angle = Random.nextDouble(0.2, 0.5).toFloat(),
+                        // the Objects.xml alreeady list dmg, but it can be modified
+                        damage = 120,
+                        numShots = 8,
+                        angleInc = Random.nextDouble(0.1, 0.2).toFloat()
+                    )
+                )
+                connection.write(msg)
+            },
+            scope = ActScope(connection.address, connection.connectionScope)
+        )
+
+        connection.put("mobsattack", actId)
     }
 
     fun mockTiles(width: Int, height: Int): List<TileData> {

@@ -6,7 +6,7 @@ import game.socket.outgoing.OutgoingMessage
 import java.io.DataOutputStream
 
 /**
- * An update represent the world update around player character.
+ * An update represent the world render update around player character.
  *
  * Gameplay explanation:
  * - When you move, you will see a new tile or object.
@@ -17,7 +17,7 @@ import java.io.DataOutputStream
 class UpdateMessage(
     val newTiles: List<TileData>,
     val newObjects: List<ObjectData>,
-    val drops: List<Int> // if this is loot bag, no idea why is it integer
+    val drops: List<Int> // drops represent the list of objects to be removed in the next render
 ) : OutgoingMessage {
     override fun write(output: DataOutputStream) {
         output.writeShort(newTiles.size)
