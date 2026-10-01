@@ -134,7 +134,7 @@ val charlistResponse = """
     <Servers>
         <Server>
             <Name>Asia</Name>
-            <dns>127.0.0.1:8080</dns>
+            <Dns>localhost</Dns>
             <Lat>37.34</Lat>
             <Long>-121.89</Long>
             <Usage>0.00</Usage>

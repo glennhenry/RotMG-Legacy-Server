@@ -181,3 +181,9 @@ There are two mode of encryption used for the network communication.
 
 1. Symmetric encryption with RC4. The client allows optional encryption mode via `Parameters.as`. If this is enabled, then network communication of client to server and vice versa will be encrypted. This means a cipher is needed to decrypt the message on client and on server end. The cipher is hardcoded in `GameServerConnectionConcrete.as`.
 2. Asymmetric encryption with RSA. The client transmit sensitive information like password and email with RSA. The message direction is one way — the client encrypts a message and the server decrypts it. This means a pair of public and private key is needed for communication. The public key is hardcoded in the client `Parameters.as`. However, the server does not own any private key. This means in order to continue the communication with RSA, a new pair of key has to be regenerated. Subsequently, the hardcoded public key of client has to be edited.
+
+### Problem With Local Client
+
+For some reasons, running the `client.swf` locally never work. It just stuck connecting to the socket and the server never receives anything. The server already sent the correct stuff and it even works with the web.
+
+Even after hardcoding socket connection to the localhost and port, the client just never wants to connect.
