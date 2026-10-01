@@ -19,10 +19,6 @@ class FallbackRotmgFanchant(private val messageId: Int) : RotmgFanchant {
         hexStr = this.bytes.hexString()
     }
 
-    override fun write(): ByteArray {
-        error("Fallback message is only used to receive unknown message")
-    }
-
     override fun toString(): String {
         return "messageId=$messageId, bytes=$hexStr"
     }

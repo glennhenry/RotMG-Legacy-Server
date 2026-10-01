@@ -47,10 +47,6 @@ class HelloFanchant(messageId: Int) : RotmgFanchant {
         platformToken = bytes.readUTF()
     }
 
-    override fun write(): ByteArray {
-        error("Hello message is a client-sent message.")
-    }
-
     override fun toString(): String {
         return this.autoToString()
     }

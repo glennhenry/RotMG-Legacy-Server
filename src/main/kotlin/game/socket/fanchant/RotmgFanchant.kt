@@ -6,8 +6,12 @@ import java.io.DataInputStream
 
 /**
  * Representation of [Fanchant] for RotMG network messages.
+ *
+ * This is also known as:
+ * - By the server, this is considered as an "incoming" message from the client.
+ * - By the client, this is considered as an "outgoing" message to the server.
+ *
  * - [readBytes]: provides a [DataInputStream] to read the received network payload.
- * - [write]: implement optionally for message intended to be sent to client.
  *
  * Implementation generally:
  * - Inherit this fanchant class instead of the root [Fanchant].
@@ -22,9 +26,4 @@ interface RotmgFanchant : Fanchant {
      * Populate local properties of the fanchant from input [bytes].
      */
     fun readBytes(bytes: DataInputStream)
-
-    /**
-     * Pack this message accordingly into bytes to be sent to client.
-     */
-    fun write(): ByteArray
 }
