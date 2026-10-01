@@ -1,11 +1,12 @@
-package game.domain.world
+package game.domain.world.gameplay
 
 import game.domain.data.WorldPosData
 import game.socket.outgoing.OutgoingMessage
 import java.io.DataOutputStream
 
 // this is probably attack initiated by player,
-// but the server do it instead such as wizard spell
+// and this represent the server verification as well as telling how much
+// dmg it does
 class ServerPlayerShootMessage(
     val bulletId: Int,
     val ownerId: Int,

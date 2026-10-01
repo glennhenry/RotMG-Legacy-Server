@@ -1,4 +1,4 @@
-package game.domain.world
+package game.domain.world.gameplay
 
 import game.domain.data.WorldPosData
 import game.socket.RotmgMessageIds
