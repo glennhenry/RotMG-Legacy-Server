@@ -31,7 +31,7 @@ class MapInfoMessage(
             output.writeInt(xmlFile.length().toInt())
 
             // XML content
-            output.writeUTF(xmlFile.readText())
+            output.writeBytes(xmlFile.readText())
         }
 
         // the number of extra XML files
@@ -41,7 +41,7 @@ class MapInfoMessage(
             output.writeInt(xmlFile.length().toInt())
 
             // XML content
-            output.writeUTF(xmlFile.readText())
+            output.writeBytes(xmlFile.readText())
         }
     }
 }
