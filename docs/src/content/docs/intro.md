@@ -220,7 +220,7 @@ In the map info, there is entries of XML files and extra XML files. We gave ever
 
 In the game, everything is considered an "object." This includes portals (e.g., vault, realm, pet yard), static objects (trees, decorations), player character and other people, and enemy mobs.
 
-Each object has unique ID, position in the world, and `ObjectStatusData` which tells the details of that object. The status specifies exhaustively, this includes things like max HP stats, max attack stats, occupied items in inventory slot, texture such as player skin and cloths, fame stats, level exp, pet stats, and many more.
+Each object has unique ID, position in the world, and `ObjectStatusData` which tells the details of that object. The status specifies exhaustively, this includes things like max HP stats, max attack stats, occupied items in inventory slot, texture such as player skin and cloths, fame stats, level exp, sprite size, pet stats, and many more.
 
 In other word, an object represent "something" that exists in the game. The status represent the details of that object. Because of the diversity of an object, the status is also diverse. This means not every object always have status.
 
@@ -235,3 +235,7 @@ By world data, for example the nexus, this includes:
 - Portals like vault, pet yard, etc.
 - Objects like shop, mystery box, etc.
 - Player characters like own character and other player characters. The character object must include object status of stats like hp, mp, equipment and inventory slots, optionally backpack, pet, and many more.
+
+### Absence of SFX files
+
+Many sfx files are lost such as characters and enemies sound effect (hit, shoot, death sounds).

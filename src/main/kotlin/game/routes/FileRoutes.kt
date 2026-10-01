@@ -1,5 +1,6 @@
 package game.routes
 
+import encore.fancam.Fancam
 import encore.route.RouteHandler
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.http.content.staticFiles
@@ -29,7 +30,30 @@ fun Route.fileRoutes() {
     }
     get("/sfx/{filename}") {
         val filename = requireNotNull(call.pathParameters["filename"]) { "No file name GET sfx/" }
-        call.respondFile(File("assets/game/sfx/$filename"))
+        val file = File("assets/game/sfx/$filename")
+        if (file.exists()) {
+            call.respondFile(file)
+        } else {
+            Fancam.warn { "Missing file: ${file.path}" }
+        }
+    }
+    get("/sfx/player/{filename}") {
+        val filename = requireNotNull(call.pathParameters["filename"]) { "No file name GET sfx/player/" }
+        val file = File("assets/game/sfx/player/$filename")
+        if (file.exists()) {
+            call.respondFile(file)
+        } else {
+            Fancam.warn { "Missing file: ${file.path}" }
+        }
+    }
+    get("/sfx/monster/{filename}") {
+        val filename = requireNotNull(call.pathParameters["filename"]) { "No file name GET sfx/monster/" }
+        val file = File("assets/game/sfx/monster/$filename")
+        if (file.exists()) {
+            call.respondFile(file)
+        } else {
+            Fancam.warn { "Missing file: ${file.path}" }
+        }
     }
     get("/music/{filename}") {
         val filename = requireNotNull(call.pathParameters["filename"]) { "No file name GET music/" }

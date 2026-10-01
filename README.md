@@ -8,6 +8,8 @@ Server emulator for RotMG legacy Flash version 27.7.DECA.
 
 As of now we have figured the HTTP and socket communication. We also have successfully entered the game with a guest account. However, the game still load a blankly as opposed an expected nexus map.
 
+Read [intro](https://github.com/glennhenry/RotMG-Legacy-Server/blob/main/docs/src/content/docs/intro.md) for documentation.
+
 _This project tries to reconstruct the game server-side behavior. This project is not official and is not associated with the original creators._
 
 Made with [Encore](https://github.com/glennhenry/Encore).
