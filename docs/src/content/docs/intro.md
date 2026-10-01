@@ -187,3 +187,51 @@ There are two mode of encryption used for the network communication.
 For some reasons, running the `client.swf` locally never work. It just stuck connecting to the socket and the server never receives anything. The server already sent the correct stuff and it even works with the web.
 
 Even after hardcoding socket connection to the localhost and port, the client just never wants to connect.
+
+### Message Guessing & Flow
+
+After socket is successfully connected, the client send a fixed `Hello` message.
+
+However, there is no set response from the server. The client never pairs any kind of message with any kind of response. The communication happens two-way: client send, server may response, and server can send anytime without client's request.
+
+Because of that, networking can be a tiring guessing effort.
+
+- I found that I can respond `MapInfo` after `Hello`, prompting the client to send `Create` message.
+- `Create` is responded with `CreateSuccess`.
+- I also re-send `MapInfo` after `CreateSuccess` to prompt the client to send `Load` message.
+- The `Load` message is responded with the `Update` message. The server will send `UpdateAck` after this.
+- After that, the client will actually enter the world and player can start gameplay interaction.
+
+The flow:
+
+1. Client > `Hello` (used for auth/identification of player, fixed)
+2. Server > `MapInfo` (provide details about world data, map, and objects data, server-initiated)
+3. Client > `Create` (initiate character creation; for guest account this is wizard class; request initiated after `MapInfo` if character hasn't been created yet.)
+4. Server > `CreateSuccess` (acknowledge character creation, response for `Create`)
+5. Server > `MapInfo` (to prompt the `Load` message, server-initiated)
+6. Client > `Load` (load the world data, request initiated after `MapInfo` if character is already created)
+7. Server > `Update` (to provide the world and objects data, response for `Load`)
+
+And finally, the client enters the game and player can start gameplay interaction.
+
+In the map info, there is entries of XML files and extra XML files. We gave every XML files we have in the assets to the client. Allegedly, this is the process where server provides objects data for client.
+
+### Object System
+
+In the game, everything is considered an "object." This includes portals (e.g., vault, realm, pet yard), static objects (trees, decorations), player character and other people, and enemy mobs.
+
+Each object has unique ID, position in the world, and `ObjectStatusData` which tells the details of that object. The status specifies exhaustively, this includes things like max HP stats, max attack stats, occupied items in inventory slot, texture such as player skin and cloths, fame stats, level exp, pet stats, and many more.
+
+In other word, an object represent "something" that exists in the game. The status represent the details of that object. Because of the diversity of an object, the status is also diverse. This means not every object always have status.
+
+For example, a vault portal doesn't need dex stats, a player object needs everything from stats, fame, level, texture (player skin), and many more, while pet object needs anything that a pet would need. Probably, enemy mobs don't need stat like HP or damage, because they are encoded in the `Objects.xml`.
+
+### Loading World
+
+The `Load` request message tells the server to return an `Update` message which should include the world data. For first time loading the game, this will always be the nexus area.
+
+By world data, for example the nexus, this includes:
+
+- Portals like vault, pet yard, etc.
+- Objects like shop, mystery box, etc.
+- Player characters like own character and other player characters. The character object must include object status of stats like hp, mp, equipment and inventory slots, optionally backpack, pet, and many more.
