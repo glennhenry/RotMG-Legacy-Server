@@ -10,7 +10,8 @@ class CreateHandler : FanchantHandler<CreateFanchant> {
     override val fanchantType: String = RotmgMessageIds.CREATE.toString()
 
     override suspend fun handle(ctx: HandlerContext<CreateFanchant>) = with(ctx) {
-        val msg = CreateSuccessMessage(1, 1)
+        // objectId here = playerId
+        val msg = CreateSuccessMessage(objectId = 1, charId = 1)
         connection.write(createMessage(RotmgMessageIds.CREATE_SUCCESS, msg))
 
         // resend mapinfo

@@ -105,7 +105,7 @@ const val BeginnerPackageTimeLeftResponse = """
 """
 
 val charlistResponse = """
-<chars nextCharId="1" maxNumChars="3">
+<chars nextCharId="2" maxNumChars="3">
     <Account>
         <AccountId>-1</AccountId>
         <Name>Chaehyun</Name>
