@@ -17,9 +17,6 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
     override val fanchantType: String = RotmgMessageIds.LOAD.toString()
 
     override suspend fun handle(ctx: HandlerContext<LoadFanchant>) = with(ctx) {
-        // example of vault portal object (1824) at x=55 y=55
-        // a player object
-        // and enemy mobs
         val mobs = ObjectData(
             // shtrs Forgotten King
             objectType = 29039,
@@ -39,6 +36,9 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
         // 400 is an example of mobs hp
         connection.put("mobs", mobs to 400)
 
+        // example of vault portal object (1824) at x=55 y=55
+        // a player object
+        // and enemy mobs
         val obj = listOf(
             ObjectData(
                 objectType = 1824,
@@ -140,6 +140,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
             scope = ActScope(connection.address, connection.connectionScope)
         )
 
+        // after mobs died, this repeating task should be stopped
         connection.put("mobsattack", actId)
     }
 

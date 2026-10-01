@@ -220,11 +220,13 @@ In the map info, there is entries of XML files and extra XML files. We gave ever
 
 In the game, everything is considered an "object." This includes portals (e.g., vault, realm, pet yard), static objects (trees, decorations), player character and other people, and enemy mobs.
 
-Each object has unique ID, position in the world, and `ObjectStatusData` which tells the details of that object. The status specifies exhaustively, this includes things like max HP stats, max attack stats, occupied items in inventory slot, texture such as player skin and cloths, fame stats, level exp, sprite size, pet stats, and many more.
+Each object has unique ID for referencing, position in the world, and `ObjectStatusData` which tells the details of that object. The status specifies exhaustively, this includes things like max HP stats, max attack stats, occupied items in inventory slot, texture such as player skin and cloths, fame stats, level exp, sprite size, pet stats, and many more.
 
 In other word, an object represent "something" that exists in the game. The status represent the details of that object. Because of the diversity of an object, the status is also diverse. This means not every object always have status.
 
 For example, a vault portal doesn't need dex stats, a player object needs everything from stats, fame, level, texture (player skin), and many more, while pet object needs anything that a pet would need. Probably, enemy mobs don't need stat like HP or damage, because they are encoded in the `Objects.xml`.
+
+Object also has a type. This is encoded in client-server communication with integer, but it's actually listed in `Objects.xml` as hexadecimal like `0x221`. The hex tells you the index of the object in the XML file.
 
 ### Loading World
 

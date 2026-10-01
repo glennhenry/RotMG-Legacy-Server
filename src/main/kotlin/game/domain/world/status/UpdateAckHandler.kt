@@ -11,27 +11,5 @@ class UpdateAckHandler(private val serverContext: ServerContext) : FanchantHandl
 
     override suspend fun handle(ctx: HandlerContext<UpdateAckFanchant>) = with(ctx) {
         Fancam.debug { "Update ACK received" }
-
-//        if (connection.get("tickrun") == null) {
-//            serverContext.stageActDirector.run(
-//                act = ForeverTimerAct(),
-//                concept = ForeverTimerConcept(
-//                    initialDelay = 0.seconds,
-//                    interval = 1.seconds
-//                ) {
-//                    val msg = createMessage(
-//                        messageId = RotmgMessageIds.NEWTICK,
-//                        outgoing = NewTickMessage(
-//                            tickId = it,
-//                            tickTime = it,
-//                            statuses = emptyList()
-//                        )
-//                    )
-//                    connection.write(msg)
-//                },
-//                scope = ActScope(connection.address, connection.connectionScope)
-//            )
-//            connection.put("tickrun", true)
-//        }
     }
 }

@@ -11,18 +11,22 @@ import game.domain.world.status.UpdateMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 
+// handles when client hit an enemy
 class EnemyHitHandler(private val serverContext: ServerContext) : FanchantHandler<EnemyHitFanchant> {
     override val fanchantType: String = RotmgMessageIds.ENEMYHIT.toString()
 
     override suspend fun handle(ctx: HandlerContext<EnemyHitFanchant>) = with(ctx) {
+        // in this case, we utilized temporary objects table inside client's connection
         @Suppress("UNCHECKED_CAST")
         val pair = connection.get("mobs") as? Pair<*, *>
         val mobObjData = pair?.first as? ObjectData
         val mobHp = pair?.second as? Int
 
+        // if mob is alive
         if (mobObjData != null && mobHp != null) {
+            // get the last bullet dmg
             val dmg =
-                requireNotNull(connection.get("lastbullet") as? Int) { "lastbullet null, check PlayerShootHandler" }
+                requireNotNull(connection.get("lastbulletdmg") as? Int) { "lastbullet null, check PlayerShootHandler" }
 
             if ((mobHp - dmg) <= 0) {
                 // mobs dead, send update
@@ -41,10 +45,12 @@ class EnemyHitHandler(private val serverContext: ServerContext) : FanchantHandle
                                     statType = StatDataConstants.INVENTORY_0_STAT,
                                     statValue = 3087
                                 ),
+                                // atk pots
                                 StatData(
                                     statType = StatDataConstants.INVENTORY_1_STAT,
                                     statValue = 2591
                                 ),
+                                // loot bag size
                                 StatData(
                                     statType = StatDataConstants.SIZE_STAT,
                                     statValue = 50
@@ -57,12 +63,13 @@ class EnemyHitHandler(private val serverContext: ServerContext) : FanchantHandle
                 val msg = UpdateMessage(
                     newTiles = emptyList(),
                     newObjects = obj,
-                    // delete the king object
+                    // also delete the king object
                     drops = listOf(3)
                 )
 
                 connection.write(createMessage(RotmgMessageIds.UPDATE, msg))
                 connection.delete("mobs")
+                // stop the mobs attack timer
                 val actId = connection.get("mobsattack") as String
                 serverContext.stageActDirector.stop(actId)
                 connection.delete("mobsattack")

@@ -5,6 +5,7 @@ import game.socket.fanchant.RotmgFanchant
 import game.utils.autoToString
 import java.io.DataInputStream
 
+// represent when client hits an enemy
 class EnemyHitFanchant : RotmgFanchant {
     override val type: String = RotmgMessageIds.ENEMYHIT.toString()
 
