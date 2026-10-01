@@ -1,4 +1,4 @@
-package game.domain.world
+package game.domain.world.status
 
 import game.domain.data.ObjectData
 import game.domain.data.TileData

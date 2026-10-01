@@ -1,4 +1,4 @@
-package game.domain.world
+package game.domain.world.movement
 
 import game.domain.data.MoveRecord
 import game.domain.data.WorldPosData

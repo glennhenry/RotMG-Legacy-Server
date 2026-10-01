@@ -7,7 +7,7 @@ import game.domain.data.ObjectData
 import game.domain.data.ObjectStatusData
 import game.domain.data.StatData
 import game.domain.data.StatDataConstants
-import game.domain.world.UpdateMessage
+import game.domain.world.status.UpdateMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 

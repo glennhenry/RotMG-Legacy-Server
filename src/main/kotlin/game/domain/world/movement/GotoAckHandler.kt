@@ -1,4 +1,4 @@
-package game.domain.world
+package game.domain.world.movement
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext

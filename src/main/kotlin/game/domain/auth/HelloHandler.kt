@@ -1,8 +1,8 @@
-package game.domain.handshake
+package game.domain.auth
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
-import game.domain.others.MapInfoMessage
+import game.domain.world.gameplay.MapInfoMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 import java.io.File

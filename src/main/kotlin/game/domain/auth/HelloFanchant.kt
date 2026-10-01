@@ -1,4 +1,4 @@
-package game.domain.handshake
+package game.domain.auth
 
 import game.socket.RSAUtils
 import game.socket.RotmgMessageIds

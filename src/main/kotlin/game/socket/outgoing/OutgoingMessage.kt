@@ -1,7 +1,7 @@
 package game.socket.outgoing
 
 import java.io.DataOutputStream
-import game.domain.account.CreateSuccessMessage
+import game.domain.character.CreateSuccessMessage
 import game.domain.data.WorldPosData
 
 /**

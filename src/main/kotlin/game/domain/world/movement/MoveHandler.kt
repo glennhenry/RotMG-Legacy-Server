@@ -1,7 +1,6 @@
-package game.domain.world
+package game.domain.world.movement
 
 import encore.fancam.Fancam
-import encore.fancam.INDENT
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
 import game.socket.RotmgMessageIds

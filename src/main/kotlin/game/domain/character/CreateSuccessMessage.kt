@@ -1,4 +1,4 @@
-package game.domain.account
+package game.domain.character
 
 import game.socket.outgoing.OutgoingMessage
 import java.io.DataOutputStream

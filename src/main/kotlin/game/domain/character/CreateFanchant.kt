@@ -1,4 +1,4 @@
-package game.domain.account
+package game.domain.character
 
 import game.socket.RotmgMessageIds
 import game.socket.fanchant.RotmgFanchant

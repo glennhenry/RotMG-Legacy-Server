@@ -1,4 +1,4 @@
-package game.domain.others
+package game.domain.world.gameplay
 
 import game.socket.outgoing.OutgoingMessage
 import java.io.DataOutputStream

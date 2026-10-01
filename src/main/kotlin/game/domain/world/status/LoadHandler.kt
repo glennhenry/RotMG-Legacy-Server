@@ -1,4 +1,4 @@
-package game.domain.world
+package game.domain.world.status
 
 import encore.acts.ActScope
 import encore.acts.template.ForeverTimerAct
