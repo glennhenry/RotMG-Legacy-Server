@@ -1,12 +1,20 @@
 # RotMG Legacy Server
 
-<img src="progress.png" alt="gameplay image" width=400/>
+<img src="progress.png" alt="gameplay image" width=300/>
+
+<img src="progress2.png" alt="gameplay image" width=300/>
 
 Server emulator for RotMG legacy Flash version 27.7.DECA.
 
-<img src="progress2.png" alt="gameplay image" width=400/>
+_The project is intentionally abandoned._
 
-As of now we have figured the HTTP and socket communication. We also have successfully entered the game with a guest account. However, the game still load a blankly as opposed an expected nexus map.
+As of now, we have figured basic construct like player/enemy/objects spawning, equipments, stats, basic map construction, player shoot, enemy shoot (but not with detailed timing), enemy hit, enemy tracking, and loot drop. However, enemy can't move yet.
+
+Gameplay:
+
+<video width="400" height="260" controls>
+  <source src="progress3.mp4" type="video/mp4">
+</video>
 
 Read [intro](https://github.com/glennhenry/RotMG-Legacy-Server/blob/main/docs/src/content/docs/intro.md) for documentation.
 
