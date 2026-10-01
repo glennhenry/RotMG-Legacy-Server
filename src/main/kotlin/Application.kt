@@ -23,7 +23,9 @@ import game.GameIdentity
 import game.Globals
 import game.context.RealContextFactory
 import game.context.ServerContext
+import game.domain.account.CreateHandler
 import game.domain.handshake.HelloHandler
+import game.domain.world.GotoAckHandler
 import game.mongo.RuntimeMongoCollections
 import game.routes.GameRoutes
 import game.routes.fileRoutes
@@ -191,4 +193,6 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
 
     // handler()
     handler(HelloHandler())
+    handler(GotoAckHandler())
+    handler(CreateHandler())
 }

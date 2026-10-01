@@ -1,6 +1,7 @@
 package game.domain.handshake
 
 import game.socket.RSAUtils
+import game.socket.RotmgMessageIds
 import game.socket.fanchant.RotmgFanchant
 import game.utils.autoToString
 import java.io.DataInputStream
@@ -8,8 +9,8 @@ import java.io.DataInputStream
 /**
  * Represent the `Hello` (83) message sent by client.
  */
-class HelloFanchant(messageId: Int) : RotmgFanchant {
-    override val type: String = messageId.toString()
+class HelloFanchant : RotmgFanchant {
+    override val type: String = RotmgMessageIds.HELLO.toString()
 
     var buildVersion: String = ""
     var gameId: Int = 0
