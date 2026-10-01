@@ -12,9 +12,7 @@ As of now, we have figured basic construct like player/enemy/objects spawning, e
 
 Gameplay:
 
-<video width="400" height="260" controls>
-  <source src="progress3.mp4" type="video/mp4">
-</video>
+[[Gameplay video: Gameplay video]](https://github.com/user-attachments/assets/54362381-db2e-4e40-88fd-4766fd8fada6)
 
 Read [intro](https://github.com/glennhenry/RotMG-Legacy-Server/blob/main/docs/src/content/docs/intro.md) for documentation.
 
