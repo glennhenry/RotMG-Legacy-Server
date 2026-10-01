@@ -16,7 +16,8 @@ class LoadHandler : FanchantHandler<LoadFanchant> {
 
     override suspend fun handle(ctx: HandlerContext<LoadFanchant>) = with(ctx) {
         // example of vault portal object (1824) at x=55 y=55
-        // and a player object
+        // a player object
+        // and enemy mobs
         val obj = listOf(
             ObjectData(
                 objectType = 1824,
@@ -27,6 +28,20 @@ class LoadHandler : FanchantHandler<LoadFanchant> {
                 )
             ),
             createPlayerObject(),
+            // shtrs Forgotten King
+            ObjectData(
+                objectType = 29039,
+                status = ObjectStatusData(
+                    objectId = 3,
+                    pos = WorldPosData(7, 8),
+                    stats = listOf(
+                        StatData(
+                            statType = StatDataConstants.SIZE_STAT,
+                            statValue = 200
+                        ),
+                    )
+                )
+            ),
         )
 
         val msg = UpdateMessage(
@@ -66,7 +81,7 @@ class LoadHandler : FanchantHandler<LoadFanchant> {
                     ),
                     StatData(
                         statType = StatDataConstants.SIZE_STAT,
-                        statValue = 5
+                        statValue = 120
                     ),
                     StatData(
                         statType = StatDataConstants.NUM_STARS_STAT,
