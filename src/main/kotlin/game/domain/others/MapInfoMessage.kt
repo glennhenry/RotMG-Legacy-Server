@@ -18,7 +18,7 @@ class MapInfoMessage(
         output.writeInt(height)
         output.writeUTF(name)
         output.writeUTF(displayName)
-        output.writeInt(fp.toInt())
+        output.writeInt(fp.toInt()) // uint
         output.writeInt(background)
         output.writeInt(difficulty)
         output.writeBoolean(allowTeleport)

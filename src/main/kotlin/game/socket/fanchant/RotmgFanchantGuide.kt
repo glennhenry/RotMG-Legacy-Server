@@ -6,6 +6,7 @@ import encore.network.fanchant.guide.FanchantGuide
 import game.domain.handshake.HelloFanchant
 import game.domain.account.CreateFanchant
 import game.domain.world.GotoAckFanchant
+import game.domain.world.LoadFanchant
 import game.socket.RotmgMessageIds
 import java.io.DataInputStream
 
@@ -41,6 +42,7 @@ class RotmgFancantGuide : FanchantGuide<Pair<Int, ByteArray>> {
             RotmgMessageIds.HELLO -> HelloFanchant()
             RotmgMessageIds.GOTOACK -> GotoAckFanchant()
             RotmgMessageIds.CREATE -> CreateFanchant()
+            RotmgMessageIds.LOAD -> LoadFanchant()
             else -> FallbackRotmgFanchant(messageId)
         }
         val input = DataInputStream(bytes.inputStream())

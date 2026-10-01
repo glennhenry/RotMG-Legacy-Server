@@ -26,6 +26,7 @@ import game.context.ServerContext
 import game.domain.account.CreateHandler
 import game.domain.handshake.HelloHandler
 import game.domain.world.GotoAckHandler
+import game.domain.world.LoadHandler
 import game.mongo.RuntimeMongoCollections
 import game.routes.GameRoutes
 import game.routes.fileRoutes
@@ -195,4 +196,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(HelloHandler())
     handler(GotoAckHandler())
     handler(CreateHandler())
+    handler(LoadHandler())
 }
