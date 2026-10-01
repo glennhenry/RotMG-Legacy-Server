@@ -7,6 +7,7 @@ import game.domain.handshake.HelloFanchant
 import game.domain.account.CreateFanchant
 import game.domain.world.GotoAckFanchant
 import game.domain.world.LoadFanchant
+import game.domain.world.UpdateAckFanchant
 import game.socket.RotmgMessageIds
 import java.io.DataInputStream
 
@@ -43,6 +44,7 @@ class RotmgFancantGuide : FanchantGuide<Pair<Int, ByteArray>> {
             RotmgMessageIds.GOTOACK -> GotoAckFanchant()
             RotmgMessageIds.CREATE -> CreateFanchant()
             RotmgMessageIds.LOAD -> LoadFanchant()
+            RotmgMessageIds.UPDATEACK -> UpdateAckFanchant()
             else -> FallbackRotmgFanchant(messageId)
         }
         val input = DataInputStream(bytes.inputStream())
