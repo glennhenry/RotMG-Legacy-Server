@@ -23,6 +23,7 @@ import game.GameIdentity
 import game.Globals
 import game.context.RealContextFactory
 import game.context.ServerContext
+import game.domain.handshake.HelloHandler
 import game.mongo.RuntimeMongoCollections
 import game.routes.GameRoutes
 import game.routes.fileRoutes
@@ -189,4 +190,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     // register handlers
 
     // handler()
+    handler(HelloHandler())
 }
