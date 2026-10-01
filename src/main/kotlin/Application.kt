@@ -198,5 +198,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GotoAckHandler())
     handler(CreateHandler())
     handler(LoadHandler())
-    handler(UpdateAckHandler())
+    handler(UpdateAckHandler(serverContext))
 }
