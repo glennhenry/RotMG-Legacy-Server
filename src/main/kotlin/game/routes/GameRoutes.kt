@@ -69,6 +69,13 @@ class GameRoutes : RouteHandler {
                 call.respond(HttpStatusCode.OK, FriendInviteRequestResponse)
             }
         }
+        post("account/getBeginnerPackageTimeLeft") {
+            handle(call, NoAuthGuard) {
+                val payload = call.receiveText().formBodyToMap()
+                Fancam.debug { "Request to account/getBeginnerPackageTimeLeft: $payload" }
+                call.respond(HttpStatusCode.OK, BeginnerPackageTimeLeftResponse)
+            }
+        }
     }
 }
 
@@ -91,6 +98,10 @@ const val FriendListResponse = """
 const val FriendInviteRequestResponse = """
     <Account>
     </Account>
+"""
+
+const val BeginnerPackageTimeLeftResponse = """
+    <TimeLeft>60000</TimeLeft>
 """
 
 val charlistResponse = """
