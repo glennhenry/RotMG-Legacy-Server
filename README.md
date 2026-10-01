@@ -6,7 +6,7 @@ Server emulator for RotMG legacy Flash version 27.7.DECA.
 
 <img src="progress2.png" alt="gameplay image" width=400/>
 
-As of now we are stuck while trying to play the game after clicking the play button on guest account. We have connected the game to the socket server, but still fail to establish any communication.
+As of now we have figured the HTTP and socket communication. We also have successfully entered the game with a guest account. However, the game still load a blankly as opposed an expected nexus map.
 
 _This project tries to reconstruct the game server-side behavior. This project is not official and is not associated with the original creators._
 
