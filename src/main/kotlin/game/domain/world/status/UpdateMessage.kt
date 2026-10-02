@@ -9,10 +9,15 @@ import java.io.DataOutputStream
  * An update represent the world render update around player character.
  *
  * Gameplay explanation:
- * - When you move, you will see a new tile or object.
- * - You may also see a loot bag if there is any.
- * - This also includes if enemy dead, an update is sent.
- *   Maybe no new tiles or objects, but there is a loot bag drop.
+ * - On first time player entered, an `Update` should provide every tiles and objects.
+ * - When a tile changes (e.g., like Sentinel's bridge), the `newTiles` should be utilized.
+ * - When an object is added (e.g., enemy spawn, player spawn), the `newObjects` should be utilized.
+ * - When an object is deleted (e.g., enemy dead, loot bag taken), the `drops` should list the `objectId` to be removed.
+ *
+ * This probably does not include new tiles when player walks into new area.
+ * It's because the client don't send update of position and it would be too resource consuming to do that.
+ * Unless if it's breaking walls in snake pit, it may be possible for tiles to be
+ * lazily loaded after wall is broken (although complex, it's possible because of player shoot handler).
  */
 class UpdateMessage(
     val newTiles: List<TileData>,

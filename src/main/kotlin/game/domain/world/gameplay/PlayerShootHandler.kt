@@ -6,6 +6,14 @@ import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 import kotlin.random.Random
 
+/**
+ * Handles when the player shoot.
+ * This includes hitting or not hitting anything.
+ * The damage will be calculated still.
+ *
+ * The handler is supposed to verify shoot and give damage.
+ * Cheater client may send arbitrary bullet, so server should invalidate that.
+ */
 class PlayerShootHandler : FanchantHandler<PlayerShootFanchant> {
     override val fanchantType: String = RotmgMessageIds.PLAYERSHOOT.toString()
 

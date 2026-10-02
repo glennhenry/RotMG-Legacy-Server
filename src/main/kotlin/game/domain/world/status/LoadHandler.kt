@@ -5,14 +5,24 @@ import encore.acts.template.ForeverTimerAct
 import encore.acts.template.ForeverTimerConcept
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
+import game.Globals
 import game.context.ServerContext
 import game.domain.data.*
 import game.domain.world.gameplay.EnemyShootMessage
+import game.domain.world.movement.GotoMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.seconds
 
+/**
+ * `Load` message represent the client loading the world for the first time.
+ * The handler should response an `Update` which contains the entire world's
+ * tiles as well as objects.
+ *
+ * It should be safe to add setup code in `Load` such as timer for
+ * enemy spawn, enemy shoot, etc. as `Load` is requested only once.
+ */
 class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<LoadFanchant> {
     override val fanchantType: String = RotmgMessageIds.LOAD.toString()
 
@@ -21,7 +31,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
             // shtrs Forgotten King
             objectType = 29039,
             status = ObjectStatusData(
-                objectId = 3,
+                objectId = Globals.MOBS_OBJECT_ID,
                 pos = WorldPosData(7, 8),
                 stats = listOf(
                     StatData(
@@ -43,7 +53,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
             ObjectData(
                 objectType = 1824,
                 status = ObjectStatusData(
-                    objectId = 2,
+                    objectId = 5,
                     pos = WorldPosData(1, 1),
                     stats = emptyList()
                 )
@@ -60,57 +70,42 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
 
         connection.write(createMessage(RotmgMessageIds.UPDATE, msg))
 
-        // update of mobs movement
+        // mobs movement using GOTO
         // advanced-ly, this may tracks player, chase, or go to set position
-        // NOT WORKING YET...
-        // the plan is: delete old object, create new object
-        // but unsure if delete/recreate means reseting the mobs HP
-//        if (connection.get("updatetimer") == null) {
-//            serverContext.stageActDirector.run(
-//                act = RepeatingTimerAct(),
-//                concept = RepeatingTimerConcept(
-//                    initialDelay = 2.seconds,
-//                    repetition = 20,
-//                    interval = 3.seconds
-//                ) {
-//                    val msg = createMessage(
-//                        messageId = RotmgMessageIds.UPDATE,
-//                        outgoing = UpdateMessage(
-//                            newTiles = emptyList(),
-//                            newObjects = listOf(
-//                                ObjectData(
-//                                    objectType = 29039,
-//                                    status = ObjectStatusData(
-//                                        objectId = prevObjId + 1,
-//                                        pos = WorldPosData(
-//                                            x = Random.nextInt(4, 8),
-//                                            y = Random.nextInt(4, 8)
-//                                        ),
-//                                        stats = listOf(
-//                                            StatData(
-//                                                statType = StatDataConstants.SIZE_STAT,
-//                                                statValue = 200
-//                                            ),
-//                                        )
-//                                    )
-//                                ).also { mobs = it }
-//                            ),
-//                            drops = listOf(prevObjId - 1)
-//                        )
-//                    )
-//                    connection.write(msg)
-//                },
-//                scope = ActScope(connection.address, connection.connectionScope)
-//            )
-//            connection.put("updatetimer", true)
-//            prevObjId += 1
-//        }
-
-        // enemy shoot repeatedly after 3 seconds every 2 seconds until it dies
-        val actId = serverContext.stageActDirector.run(
+        val actId1 = serverContext.stageActDirector.run(
             act = ForeverTimerAct(),
             concept = ForeverTimerConcept(
-                initialDelay = 3.seconds,
+                initialDelay = 2.seconds,
+                interval = 1.seconds
+            ) {
+                val mobsPrevPos = mobs.status.pos
+                // move up/down left/right
+                val newPos = mobsPrevPos.copy(
+                    x = Random.nextInt(mobsPrevPos.x - 1, mobsPrevPos.x + 1),
+                    y = Random.nextInt(mobsPrevPos.y - 1, mobsPrevPos.y + 1),
+                )
+                val msg = createMessage(
+                    messageId = RotmgMessageIds.GOTO,
+                    outgoing = GotoMessage(
+                        objectId = Globals.MOBS_OBJECT_ID,
+                        x = newPos.x,
+                        y = newPos.y,
+                    )
+                )
+                connection.write(msg)
+            },
+            scope = ActScope(
+                connection.address, connection.connectionScope
+            )
+        )
+
+        connection.put("mobsmovement", actId1)
+
+        // enemy shoot repeatedly after 3 seconds every 2 seconds until it dies
+        val actId2 = serverContext.stageActDirector.run(
+            act = ForeverTimerAct(),
+            concept = ForeverTimerConcept(
+                initialDelay = 6.seconds,
                 interval = 1.seconds
             ) {
                 val msg = createMessage(
@@ -132,7 +127,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
                         // the Objects.xml alreeady list dmg, but it can be modified
                         damage = 120,
                         numShots = 8,
-                        angleInc = Random.nextDouble(0.1, 0.2).toFloat()
+                        angleInc = 0.1f
                     )
                 )
                 connection.write(msg)
@@ -141,7 +136,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
         )
 
         // after mobs died, this repeating task should be stopped
-        connection.put("mobsattack", actId)
+        connection.put("mobsattack", actId2)
     }
 
     fun mockTiles(width: Int, height: Int): List<TileData> {
@@ -163,7 +158,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
         return ObjectData(
             objectType = 782,
             status = ObjectStatusData(
-                objectId = 1,
+                objectId = Globals.PLAYER_OBJECT_ID,
                 pos = WorldPosData(2, 2),
                 stats = listOf(
                     StatData(
@@ -172,7 +167,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
                     ),
                     StatData(
                         statType = StatDataConstants.SIZE_STAT,
-                        statValue = 120
+                        statValue = 100
                     ),
                     StatData(
                         statType = StatDataConstants.NUM_STARS_STAT,
@@ -245,6 +240,14 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
                     StatData(
                         statType = StatDataConstants.INVENTORY_1_STAT,
                         statValue = 2608
+                    ),
+                    StatData(
+                        statType = StatDataConstants.INVENTORY_2_STAT,
+                        statValue = 3182
+                    ),
+                    StatData(
+                        statType = StatDataConstants.INVENTORY_3_STAT,
+                        statValue = 3117
                     ),
                     // player skin
                     StatData(

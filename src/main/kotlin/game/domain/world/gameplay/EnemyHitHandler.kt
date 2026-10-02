@@ -2,6 +2,7 @@ package game.domain.world.gameplay
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
+import game.Globals
 import game.context.ServerContext
 import game.domain.data.ObjectData
 import game.domain.data.ObjectStatusData
@@ -11,7 +12,11 @@ import game.domain.world.status.UpdateMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 
-// handles when client hit an enemy
+/**
+ * Message sent when a client hits an enemy.
+ * Server should reduce enemy's HP and possibly send an `Update`
+ * message to surrounding players if the enemy died or a loot is dropped.
+ */
 class EnemyHitHandler(private val serverContext: ServerContext) : FanchantHandler<EnemyHitFanchant> {
     override val fanchantType: String = RotmgMessageIds.ENEMYHIT.toString()
 
@@ -64,7 +69,7 @@ class EnemyHitHandler(private val serverContext: ServerContext) : FanchantHandle
                     newTiles = emptyList(),
                     newObjects = obj,
                     // also delete the king object
-                    drops = listOf(3)
+                    drops = listOf(Globals.MOBS_OBJECT_ID)
                 )
 
                 connection.write(createMessage(RotmgMessageIds.UPDATE, msg))
@@ -73,6 +78,10 @@ class EnemyHitHandler(private val serverContext: ServerContext) : FanchantHandle
                 val actId = connection.get("mobsattack") as String
                 serverContext.stageActDirector.stop(actId)
                 connection.delete("mobsattack")
+                // stop the mobs movement timer
+                val actId2 = connection.get("mobsmovement") as String
+                serverContext.stageActDirector.stop(actId2)
+                connection.delete("mobsmovement")
             } else {
                 connection.put("mobs", mobObjData to mobHp - dmg)
             }
