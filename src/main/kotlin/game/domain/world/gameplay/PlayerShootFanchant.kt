@@ -13,7 +13,7 @@ class PlayerShootFanchant : RotmgFanchant {
     var time: Int = 0
     var bulletId: Int = 0
     var containerType: Int = 0
-    var startPos: WorldPosData = WorldPosData(0, 0)
+    var startPos: WorldPosData = WorldPosData(0f, 0f)
     var angle: Float = 0.0f
 
     override fun readBytes(bytes: DataInputStream) {

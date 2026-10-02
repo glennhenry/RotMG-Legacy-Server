@@ -12,7 +12,7 @@ class MoveFanchant : RotmgFanchant {
 
     var tickId: Int = 0
     var time: Int = 0
-    var newPos: WorldPosData = WorldPosData(0, 0)
+    var newPos: WorldPosData = WorldPosData(0f, 0f)
     val moveRecords: MutableList<MoveRecord> = mutableListOf()
 
     override fun readBytes(bytes: DataInputStream) {

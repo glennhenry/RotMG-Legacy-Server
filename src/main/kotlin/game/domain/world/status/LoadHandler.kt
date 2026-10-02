@@ -13,6 +13,7 @@ import game.domain.world.movement.GotoMessage
 import game.socket.RotmgMessageIds
 import game.socket.outgoing.createMessage
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -32,7 +33,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
             objectType = 29039,
             status = ObjectStatusData(
                 objectId = Globals.MOBS_OBJECT_ID,
-                pos = WorldPosData(7, 8),
+                pos = WorldPosData(7f, 8f),
                 stats = listOf(
                     StatData(
                         statType = StatDataConstants.SIZE_STAT,
@@ -54,7 +55,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
                 objectType = 1824,
                 status = ObjectStatusData(
                     objectId = 5,
-                    pos = WorldPosData(1, 1),
+                    pos = WorldPosData(1f, 1f),
                     stats = emptyList()
                 )
             ),
@@ -76,13 +77,16 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
             act = ForeverTimerAct(),
             concept = ForeverTimerConcept(
                 initialDelay = 2.seconds,
-                interval = 1.seconds
+                interval = 200.milliseconds
             ) {
                 val mobsPrevPos = mobs.status.pos
+                val x = Random.nextDouble(-0.4, 0.4).toFloat()
+                val y = Random.nextDouble(-0.4, 0.4).toFloat()
+
                 // move up/down left/right
                 val newPos = mobsPrevPos.copy(
-                    x = Random.nextInt(mobsPrevPos.x - 1, mobsPrevPos.x + 1),
-                    y = Random.nextInt(mobsPrevPos.y - 1, mobsPrevPos.y + 1),
+                    x = mobsPrevPos.x + x,
+                    y = mobsPrevPos.y + y,
                 )
                 val msg = createMessage(
                     messageId = RotmgMessageIds.GOTO,
@@ -159,7 +163,7 @@ class LoadHandler(private val serverContext: ServerContext) : FanchantHandler<Lo
             objectType = 782,
             status = ObjectStatusData(
                 objectId = Globals.PLAYER_OBJECT_ID,
-                pos = WorldPosData(2, 2),
+                pos = WorldPosData(2f, 2f),
                 stats = listOf(
                     StatData(
                         statType = StatDataConstants.LEVEL_STAT,
