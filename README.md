@@ -12,7 +12,7 @@ As of now, we have figured basic construct like player/enemy/objects spawning, e
 
 Gameplay:
 
-[[Gameplay video: Gameplay video]](https://github.com/user-attachments/assets/54362381-db2e-4e40-88fd-4766fd8fada6)
+[[Gameplay video: Gameplay video]](https://github.com/user-attachments/assets/3f4465e0-05bd-4b1d-9d79-3144881b4533)
 
 Read [intro](https://github.com/glennhenry/RotMG-Legacy-Server/blob/main/docs/src/content/docs/intro.md) for documentation.
 
