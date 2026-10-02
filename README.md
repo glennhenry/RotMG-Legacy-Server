@@ -8,7 +8,7 @@ Server emulator for RotMG legacy Flash version 27.7.DECA.
 
 _The project is intentionally abandoned._
 
-As of now, we have figured basic construct like player/enemy/objects spawning, equipments, stats, basic map construction, player shoot, enemy shoot (but not with detailed timing), enemy hit, enemy tracking, and loot drop. However, enemy can't move yet.
+As of now, we have figured basic construct like player/enemy/objects spawning, equipments, stats, basic map construction, player shoot, enemy shoot (but not with detailed timing), enemy hit, enemy HP tracking, enemy movements (but not realistic movement), and simple loot drop.
 
 Gameplay:
 
